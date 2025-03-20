@@ -20,11 +20,10 @@ from const import Const as C
 class Dialogue(QMainWindow):
     # Переменные класса, определённые в Qt Designer
     txtBrowSource: QTextBrowser
-    txtBrowReplace1: QTextBrowser
-    txtBrowReplace2: QTextBrowser
+    txtBrowReplace: QTextBrowser
     buttonBox: QDialogButtonBox
     yes_button: QPushButton
-    ok_button: QPushButton
+    no_button: QPushButton
     cancel_button: QPushButton
 
     def __init__(self):
@@ -42,11 +41,13 @@ class Dialogue(QMainWindow):
     def keyPressEvent(self, event):
         """Перехватываем ввод с клавиатуры"""
         match event.key():
-            case Qt.Key.Key_1:  # Выбран первый вариант замены
+            case Qt.Key.Key_1:  # Заменять текст
                 self.on_Yes()
-            case Qt.Key.Key_2:  # Выбран второй вариант замены
-                self.on_Ok()
-            case Qt.Key.Key_Escape:  # Отказ от замены
+            case Qt.Key.Key_Escape:  # Выгрузить программу
+                self.on_No()
+            case Qt.Key.Key_2:  # Выгрузить программу
+                self.on_No()
+            case Qt.Key.Key_3:  # Отказ от замены
                 self.on_Cancel()
             case _:
                 super().keyPressEvent(event)
@@ -66,7 +67,7 @@ class Dialogue(QMainWindow):
     def init_var(self):
         """Присваиваем значения переменным программы"""
         self.yes_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Yes)
-        self.ok_button = self.buttonBox.button(QDialogButtonBox.StandardButton.Ok)
+        self.no_button = self.buttonBox.button(QDialogButtonBox.StandardButton.No)
         self.cancel_button = self.buttonBox.button(
             QDialogButtonBox.StandardButton.Cancel
         )
@@ -74,21 +75,25 @@ class Dialogue(QMainWindow):
     def connect(self):
         """Назначаем обработчики событий для клика кнопок"""
         self.yes_button.clicked.connect(self.on_Yes)
-        self.ok_button.clicked.connect(self.on_Ok)
+        self.no_button.clicked.connect(self.on_No)
         self.cancel_button.clicked.connect(self.on_Cancel)
 
     def custom_UI(self):
         """Пользовательская настройка интерфейса"""
-        # Устанавливаем названия кнопок
+        # Устанавливаем названия и стили кнопок
         self.yes_button.setText(C.TEXT_YES_BUTTON)
-        self.ok_button.setText(C.TEXT_OK_BUTTON)
+        self.yes_button.setStyleSheet(C.QSS_REPLACEMENT + C.QSS_BUTTON)
+        self.txtBrowReplace.setStyleSheet(C.QSS_REPLACEMENT)
+        self.no_button.setText(C.TEXT_NO_BUTTON)
+        self.no_button.setStyleSheet(C.QSS_NO_REPLACEMENT + C.QSS_BUTTON)
+        self.txtBrowSource.setStyleSheet(C.QSS_NO_REPLACEMENT)
         self.cancel_button.setText(C.TEXT_CANCEL_BUTTON)
 
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
         # Определяем, что если на кнопке установлен фокус, то при нажатии Enter она считается нажатой.
         self.yes_button.setAutoDefault(True)
-        self.ok_button.setAutoDefault(True)
+        self.no_button.setAutoDefault(True)
         self.cancel_button.setAutoDefault(True)
 
     def remember_clipboard(self):
@@ -100,19 +105,12 @@ class Dialogue(QMainWindow):
         self.txtBrowSource.setText(self.clipboard_text)
 
     def display_replacements(self):
-        """
-        Рассчитываем и отображаем варианты замены текста.
-        С английского регистра на русский и с русского на английский
-        """
+        """Рассчитываем и отображаем вариант замены текста."""
+
         replace_text = ReplaceText()
-        # self.txtBrowReplace1.setText(replace_text.translate_text(self.clipboard_text))
-        self.txtBrowReplace1.setText(
+        self.txtBrowReplace.setText(
             replace_text.swap_keyboard_layout(self.clipboard_text)
         )
-        reverse_translate_text = replace_text.reverse_translate_text(
-            self.clipboard_text
-        )
-        self.txtBrowReplace2.setText(reverse_translate_text)
 
     @staticmethod
     def text_to_clipboard(text: str) -> None:
@@ -122,19 +120,19 @@ class Dialogue(QMainWindow):
             clipboard.setText(text)
 
     def on_Yes(self):
-        """Записываем первый вариант замены текста в буфер обмена"""
-        # Выход из программы с кодом, отличным от 0 - указание головной программе вставить текст из буфера обмена
-        self.text_to_clipboard(self.txtBrowReplace1.toPlainText())
+        """Записываем вариант замены текста в буфер обмена"""
+        # Выход из программы с кодом, отличным от 1 - указание головной программе вставить текст из буфера обмена
+        self.text_to_clipboard(self.txtBrowReplace.toPlainText())
         QApplication.exit(1)
 
-    def on_Ok(self):
-        """Записываем второй вариант замены текста в буфер обмена"""
-        # Выход из программы с кодом, отличным от 0 - указание головной программе вставить текст из буфера обмена
-        self.text_to_clipboard(self.txtBrowReplace2.toPlainText())
+    @staticmethod
+    def on_No():
+        """Отказ от замены текста"""
+        # Выход из программы с кодом, отличным от 2 - указание головной программе не заменять текст
         QApplication.exit(2)
 
     @staticmethod
     def on_Cancel():
         """Прекращаем диалог"""
-        # Выход из программы с кодом 0 - указание головной программе НЕ вставлять текст из буфера обмена
-        QApplication.exit(0)
+        # Выход из программы с кодом 3 - указание головной программе выгрузить программу
+        QApplication.exit(3)

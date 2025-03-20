@@ -4,12 +4,14 @@ from pynput.keyboard import Key
 
 @dataclass(frozen=True, slots=False)
 class Const:
-    TEXT_YES_BUTTON = "Заменить текстом 1 "
-    TEXT_OK_BUTTON = "Заменить текстом 2 "
-    TEXT_CANCEL_BUTTON = "Оставить прежним"
+    TEXT_YES_BUTTON = "Заменить\nНажми 1"
+    QSS_REPLACEMENT = "color: blue;"
+    QSS_BUTTON = "font-weight: bold; font-size: 12pt; "
+    TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
+    QSS_NO_REPLACEMENT = "color: darkblue;"
+    TEXT_CANCEL_BUTTON = "Выгрузить программу\nНажми 3"
     TEXT_CRITICAL_ERROR = (
         "Ошибка в программе. функция f.init_PyQt6() вернула недопустимый код возврата -"
     )
     KEY_SCROLL_LOCK = Key.scroll_lock
-    KEY_CTRL_SCROLL_LOCK = "<3>"
-    DELAY_TIME_SECONDS = 0.1
+    DELAY_TIME_SECONDS = 0.5

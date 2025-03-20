@@ -24,17 +24,17 @@ class Listen:
             f.press_ctrl("c")
             rc = f.init_PyQt6()  # Вызов диалога
             match rc:
-                case 0:
+                case 0:  # Закрытие окна средствами Windows
                     return  # Ничего не делаем
                 case 1:
                     f.press_ctrl("v")  # Эмуляция Ctrl+v
                 case 2:
-                    f.press_ctrl("v")  # Эмуляция Ctrl+v
+                    return  # Ничего не делаем
+                case 3:
+                    # noinspection PyTypeChecker
+                    return False  # Выгружаем программу
                 case _:
                     raise ValueError(f"{C.TEXT_CRITICAL_ERROR} {rc}")
-
-        if str(key) == C.KEY_CTRL_SCROLL_LOCK:
-            return False
 
     def listen(self):
         """Прослушивание клавиатуры"""
