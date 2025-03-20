@@ -13,5 +13,8 @@ class Const:
     TEXT_CRITICAL_ERROR = (
         "Ошибка в программе. функция f.init_PyQt6() вернула недопустимый код возврата -"
     )
+    QSS_TEXT = "color: mediumblue;"
+    MIN_WIDTH_BUTTON = 150
     KEY_SCROLL_LOCK = Key.scroll_lock
     DELAY_TIME_SECONDS = 0.5
+    PATH_DIALOGUE_UI = r"_internal\dialogue.ui"

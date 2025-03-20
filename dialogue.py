@@ -43,25 +43,24 @@ class Dialogue(QMainWindow):
         match event.key():
             case Qt.Key.Key_1:  # Заменять текст
                 self.on_Yes()
-            case Qt.Key.Key_Escape:  # Выгрузить программу
+            case Qt.Key.Key_Escape:  # Отказ от замены
                 self.on_No()
-            case Qt.Key.Key_2:  # Выгрузить программу
+            case Qt.Key.Key_2:  # Отказ от замены
                 self.on_No()
-            case Qt.Key.Key_3:  # Отказ от замены
+            case Qt.Key.Key_3:  # Выгрузить программу
                 self.on_Cancel()
             case _:
                 super().keyPressEvent(event)
 
     def init_UI(self) -> None:
         """Загрузка UI и атрибутов полей в объект класса"""
-
         exe_directory = (  # Директория, из которой была запущена программа
             Path(sys.argv[0]).parent
             if hasattr(sys, "frozen")  # exe файл, получен с помощью PyInstaller
             else Path(__file__).parent  # Если файл запущен как обычный Python-скрипт
         )
 
-        ui_config_abs_path = exe_directory / "dialogue.ui"
+        ui_config_abs_path = exe_directory / C.PATH_DIALOGUE_UI
         uic.loadUi(ui_config_abs_path, self)
 
     def init_var(self):
@@ -81,13 +80,15 @@ class Dialogue(QMainWindow):
     def custom_UI(self):
         """Пользовательская настройка интерфейса"""
         # Устанавливаем названия и стили кнопок
-        self.yes_button.setText(C.TEXT_YES_BUTTON)
+        self.yes_button.setMinimumWidth(C.MIN_WIDTH_BUTTON)
         self.yes_button.setStyleSheet(C.QSS_REPLACEMENT + C.QSS_BUTTON)
-        self.txtBrowReplace.setStyleSheet(C.QSS_REPLACEMENT)
-        self.no_button.setText(C.TEXT_NO_BUTTON)
+        self.yes_button.setText(C.TEXT_YES_BUTTON)
+        self.no_button.setMinimumWidth(C.MIN_WIDTH_BUTTON)
         self.no_button.setStyleSheet(C.QSS_NO_REPLACEMENT + C.QSS_BUTTON)
-        self.txtBrowSource.setStyleSheet(C.QSS_NO_REPLACEMENT)
+        self.no_button.setText(C.TEXT_NO_BUTTON)
         self.cancel_button.setText(C.TEXT_CANCEL_BUTTON)
+        self.txtBrowReplace.setStyleSheet(C.QSS_TEXT)
+        self.txtBrowSource.setStyleSheet(C.QSS_TEXT)
 
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
