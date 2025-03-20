@@ -105,7 +105,10 @@ class Dialogue(QMainWindow):
         С английского регистра на русский и с русского на английский
         """
         replace_text = ReplaceText()
-        self.txtBrowReplace1.setText(replace_text.translate_text(self.clipboard_text))
+        # self.txtBrowReplace1.setText(replace_text.translate_text(self.clipboard_text))
+        self.txtBrowReplace1.setText(
+            replace_text.swap_keyboard_layout(self.clipboard_text)
+        )
         reverse_translate_text = replace_text.reverse_translate_text(
             self.clipboard_text
         )

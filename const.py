@@ -12,3 +12,4 @@ class Const:
     )
     KEY_SCROLL_LOCK = Key.scroll_lock
     KEY_CTRL_SCROLL_LOCK = "<3>"
+    DELAY_TIME_SECONDS = 0.1

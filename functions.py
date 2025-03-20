@@ -3,8 +3,10 @@
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt
 from pyautogui import hotkey
+from time import sleep
 
 from dialogue import Dialogue
+from const import Const as C
 
 
 def press_ctrl(s: str) -> None:
@@ -14,6 +16,7 @@ def press_ctrl(s: str) -> None:
     :return: None
     """
     hotkey("ctrl", s)
+    sleep(C.DELAY_TIME_SECONDS)
 
 
 def init_PyQt6():
