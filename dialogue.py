@@ -1,10 +1,10 @@
-"""Класс организации диалога с пользователем"""
+"""Классы сигналов и организации диалога с пользователем"""
 
 import sys
 from pathlib import Path
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from PyQt6.QtWidgets import (
     QTextBrowser,
     QMainWindow,
@@ -15,9 +15,20 @@ from PyQt6.QtWidgets import (
 
 from replacetext import ReplaceText
 from const import Const as C
+import name
 
 
+class KeyPressHandler(QObject):
+    """Класс сигналов"""
+
+    keyPressed = pyqtSignal()
+    endProcess = pyqtSignal()
+
+
+# noinspection PyUnresolvedReferences
 class Dialogue(QMainWindow):
+    """Класс организации диалога с пользователем"""
+
     # Переменные класса, определённые в Qt Designer
     txtBrowSource: QTextBrowser
     txtBrowReplace: QTextBrowser
@@ -26,17 +37,15 @@ class Dialogue(QMainWindow):
     no_button: QPushButton
     cancel_button: QPushButton
 
-    def __init__(self):
+    def __init__(self, key_handler: KeyPressHandler):
         super().__init__()
+        self.key_handler = key_handler
         self.clipboard_text = ""
 
         self.init_UI()  # Загружаем файл, сформированный Qt Designer
         self.init_var()  # Инициализируем переменные
         self.connect()  # Назначаем обработчики для событий
         self.custom_UI()  # Делаем пользовательские настройки интерфейса
-        self.remember_clipboard()  # запоминаем буфера обмена
-        self.display_clipboard()  # Визуализация буфера обмена
-        self.display_replacements()  # Рассчитываем и отображаем варианты замены теста
 
     def keyPressEvent(self, event):
         """Перехватываем ввод с клавиатуры"""
@@ -50,7 +59,14 @@ class Dialogue(QMainWindow):
             case Qt.Key.Key_3:  # Выгрузить программу
                 self.on_Cancel()
             case _:
+                # Для остальных клавиш передаём обработку системе
                 super().keyPressEvent(event)
+
+    def closeEvent(self, event):
+        """Перехватываем закрытие окна Пользователем"""
+        name.ret_code_dialogue = 0
+        self.key_handler.endProcess.emit()
+        event.ignore()
 
     def init_UI(self) -> None:
         """Загрузка UI и атрибутов полей в объект класса"""
@@ -122,18 +138,24 @@ class Dialogue(QMainWindow):
 
     def on_Yes(self):
         """Записываем вариант замены текста в буфер обмена"""
-        # Выход из программы с кодом, отличным от 1 - указание головной программе вставить текст из буфера обмена
+        # name.ret_code_dialogue == 1 - указание головной программе вставить текст из буфера обмена
         self.text_to_clipboard(self.txtBrowReplace.toPlainText())
-        QApplication.exit(1)
+        name.window.hide()
+        name.ret_code_dialogue = 1
+        self.key_handler.endProcess.emit()
 
-    @staticmethod
-    def on_No():
+    def on_No(self):
         """Отказ от замены текста"""
-        # Выход из программы с кодом, отличным от 2 - указание головной программе не заменять текст
-        QApplication.exit(2)
+        # name.ret_code_dialogue == 2 - указание головной программе не заменять текст
+        name.ret_code_dialogue = 2
+        self.key_handler.endProcess.emit()
 
     @staticmethod
     def on_Cancel():
-        """Прекращаем диалог"""
-        # Выход из программы с кодом 3 - указание головной программе выгрузить программу
-        QApplication.exit(3)
+        """Выгружаем программу"""
+        QApplication.quit()
+
+    def processing_clipboard(self):
+        self.remember_clipboard()  # запоминаем буфера обмена
+        self.display_clipboard()  # Визуализируем буфера обмена
+        self.display_replacements()  # Рассчитываем и отображаем вариант замены теста
