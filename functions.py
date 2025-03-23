@@ -26,11 +26,14 @@ def window_show() -> None:
     """
     window = name.window
     # Поднимаем окно над остальными окнами
-    window.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
-    window.processing_clipboard()  # Обрабатываем буфер обмена
-    window.show()  # Выводим окно на экран
-    # Делаем окно доступным для ввода с клавиатуры
-    window.activateWindow()
+    if window:
+        window.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
+        window.processing_clipboard()  # Обрабатываем буфер обмена
+        window.show()  # Выводим окно на экран
+        # Делаем окно доступным для ввода с клавиатуры
+        window.activateWindow()
+    else:
+        raise ValueError("C.TEXT_CRITICAL_ERROR_2")
 
 
 def window_hide() -> None:
@@ -46,6 +49,6 @@ def window_hide() -> None:
         case 2:  # Отказ от замены текста
             pass
         case _:  # Непредусмотренная команда
-            raise ValueError(f"{C.TEXT_CRITICAL_ERROR} {rc}")
+            raise ValueError(f"{C.TEXT_CRITICAL_ERROR_1} {rc}")
 
     window.hide()  # Убираем окно с экрана

@@ -7,21 +7,25 @@ import os
 
 from lsten import Listen
 from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import QSharedMemory
 
 from dialogue import Dialogue, KeyPressHandler
 import name
 import functions as f
 
 if __name__ == "__main__":
+    shared_memory = QSharedMemory("UIP")
+    if shared_memory.attach():
+        exit(1)
+    if not shared_memory.create(1):
+        raise ValueError
+    # Подавляем предупреждения qt.qpa.window
+    os.environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
+
     # Создаём объект сигналов
     key_handler = KeyPressHandler()
     key_handler.keyPressed.connect(f.window_show)
     key_handler.endProcess.connect(f.window_hide)
-
-
-    # Подавляем предупреждения qt.qpa.window
-    os.environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
-    ctypes.windll.shcore.SetProcessDpiAwareness(1)  # Обработка больших DPI
 
     # Создаем главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
