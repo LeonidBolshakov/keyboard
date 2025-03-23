@@ -4,13 +4,13 @@ from pynput.keyboard import Key, KeyCode, Listener
 
 import functions as f
 from const import Const as C
-from dialogue import KeyPressHandler
+from dialogue import SignalsDialogue
 
 
 class Listen:
     """Класс для прослушивания клавиатуры"""
 
-    def __init__(self, key_handler: KeyPressHandler):
+    def __init__(self, key_handler: SignalsDialogue):
         self.key_handler = key_handler  # Сигнал отпускания клавиши вызова диалога
 
     def on_release(self, key: Key | KeyCode) -> None:
@@ -19,11 +19,11 @@ class Listen:
         :param key: (Key | KeyCode) - отпущенная клавиша
         :return: None
         """
-        if key == C.KEY_SCROLL_LOCK:  # Клавиша вызова окна диалога
+        if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Эмуляция Ctrl+c
             f.press_ctrl("c")
             # Генерация сигнала "Нажатие клавиши вызова"
-            self.key_handler.keyPressed.emit()
+            self.key_handler.start_dialogue.emit()
 
     def listen(self):
         """Прослушивание клавиатуры"""

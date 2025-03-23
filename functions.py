@@ -51,4 +51,5 @@ def window_hide() -> None:
         case _:  # Непредусмотренная команда
             raise ValueError(f"{C.TEXT_CRITICAL_ERROR_1} {rc}")
 
-    window.hide()  # Убираем окно с экрана
+    if window:
+        window.hide()  # Убираем окно с экрана

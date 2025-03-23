@@ -18,7 +18,7 @@ class Const:
     )
     QSS_TEXT = "color: mediumblue;"  # Силь текста
     MIN_WIDTH_BUTTON = 150  # Минимальная ширина первых двух кнопок
-    KEY_SCROLL_LOCK = Key.scroll_lock  # Клавиша вызова окна диалога
+    KEY_BEGIN_DIALOGUE = Key.scroll_lock  # Клавиша вызова окна диалога
     DELAY_TIME_SECONDS = 0.1  # Задержка, в секундах, после нажатия Ctrl+Клавиша
     PATH_DIALOGUE_UI = (
         r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer

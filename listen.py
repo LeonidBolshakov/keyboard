@@ -19,7 +19,7 @@ class Listen:
         :return:    None
         """
 
-        if key == C.KEY_SCROLL_LOCK:
+        if key == C.KEY_BEGIN_DIALOGUE:
             # Эмуляция Ctrl+c
             f.press_ctrl("c")
             rc = f.init_PyQt6()  # Вызов диалога

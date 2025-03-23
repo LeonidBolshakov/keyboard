@@ -18,11 +18,11 @@ from const import Const as C
 import name
 
 
-class KeyPressHandler(QObject):
+class SignalsDialogue(QObject):
     """Класс сигналов"""
 
-    keyPressed = pyqtSignal()
-    endProcess = pyqtSignal()
+    start_dialogue = pyqtSignal()
+    end_dialogue = pyqtSignal()
 
 
 # noinspection PyUnresolvedReferences
@@ -37,7 +37,7 @@ class Dialogue(QMainWindow):
     no_button: QPushButton
     cancel_button: QPushButton
 
-    def __init__(self, key_handler: KeyPressHandler):
+    def __init__(self, key_handler: SignalsDialogue):
         super().__init__()
         self.key_handler = key_handler
         self.clipboard_text = ""
@@ -65,7 +65,7 @@ class Dialogue(QMainWindow):
     def closeEvent(self, event):
         """Перехватываем закрытие окна Пользователем"""
         name.ret_code_dialogue = 0
-        self.key_handler.endProcess.emit()
+        self.key_handler.end_dialogue.emit()
         event.ignore()
 
     def init_UI(self) -> None:
@@ -142,13 +142,13 @@ class Dialogue(QMainWindow):
         self.text_to_clipboard(self.txtBrowReplace.toPlainText())
         name.window.hide()
         name.ret_code_dialogue = 1
-        self.key_handler.endProcess.emit()
+        self.key_handler.end_dialogue.emit()
 
     def on_No(self):
         """Отказ от замены текста"""
         # name.ret_code_dialogue == 2 - указание головной программе не заменять текст
         name.ret_code_dialogue = 2
-        self.key_handler.endProcess.emit()
+        self.key_handler.end_dialogue.emit()
 
     @staticmethod
     def on_Cancel():
