@@ -28,7 +28,8 @@ class Const:
     )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
     TEXT_YES_BUTTON = "Заменить\nНажми 1"
-    TIME_DELAY_CTRL = 0.2  # Задержка, в секундах, после нажатия Ctrl+Клавиша
+    TIME_DELAY_CTRL_C = 0.2  # Задержка, в секундах, после нажатия Ctrl+c
+    TIME_DELAY_CTRL_V = 0.2  # Задержка, в секундах, после нажатия Ctrl+v
     TIME_MESSAGE_RESTART_PROGRAM = (
         2  # Время, в секундах, высвечивания сообщения о повторном запуске программы
     )

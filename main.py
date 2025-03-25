@@ -3,6 +3,7 @@
 from sys import exit
 from os import environ
 import threading
+import logging
 
 from lsten import Listen
 from PyQt6.QtWidgets import QApplication
@@ -34,6 +35,15 @@ def start_keyboard_listening() -> None:
     listener_thread.start()
 
 
+def init_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        filename="keyboard.log",
+        format="%(asctime)s %(levelname)s %(message)s",
+    )
+    logging.info("Program loaded")
+
+
 if __name__ == "__main__":
     # Блокируем вывод сообщений о GPA
     environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
@@ -42,9 +52,11 @@ if __name__ == "__main__":
     shared_memory = QSharedMemory(C.UUID_PROGRAM)
     shared_memory.attach()
     if shared_memory.data():
+        logging.warning("Recalling the program")
         is_restart_program = True
     else:
         shared_memory.create(1)
+        init_logging()
         is_restart_program = False
 
     # Создаём сигналы старта и остановки работы класса dialogue

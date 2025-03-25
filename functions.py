@@ -1,6 +1,9 @@
 """Функции, не привязанные к классам"""
 
 from time import sleep
+import logging
+
+logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
 from PyQt6.QtCore import Qt, QTimer
@@ -11,16 +14,18 @@ from const import Const as C
 import name
 
 
-def press_ctrl(s: str) -> None:
+def press_ctrl(s: str, time_delay: int | float) -> None:
     """
     Эмулировать нажатие клавиш Ctrl+символ.
     :param s: (str). Символ, нажимаемый вместе с Ctrl
+    :param time_delay: (int | float). Время задержки после нажатия клавиши
     :return: None
     """
     hotkey("ctrl", s)
+    logger.debug(f"ctrl+{s}")
 
     # Ждём завершения команда Ctrl + {s}
-    sleep(float(C.TIME_DELAY_CTRL))  # QTimer() отрабатывает некорректно.
+    sleep(float(time_delay))  # QTimer() отрабатывает некорректно.
 
 
 def text_to_clipboard(text: str) -> None:
@@ -49,6 +54,7 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
 def on_Cancel() -> None:
     """Выгружаем программу"""
+    logger.info("Program unloaded")
     QApplication.quit()
 
 
@@ -93,7 +99,7 @@ def window_show() -> None:
         # Делаем окно доступным для ввода с клавиатуры
         window.activateWindow()
     else:
-        print("C.TEXT_CRITICAL_ERROR_2")
+        logger.critical(f"{C.TEXT_CRITICAL_ERROR_2}")
 
 
 def window_hide() -> None:
@@ -105,11 +111,11 @@ def window_hide() -> None:
         case 0:  # Выгрузка программы
             pass
         case 1:  # Заменяем выделенный текст
-            press_ctrl("v")  # Эмуляция Ctrl+v
+            press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
         case 2:  # Отказ от замены текста
             pass
         case _:  # Непредусмотренная команда
-            print(f"{C.TEXT_CRITICAL_ERROR_1} {name.ret_code_dialogue=}")
+            logger.critical(f"{C.TEXT_CRITICAL_ERROR_1} {name.ret_code_dialogue=}")
 
     if window:
         window.hide()  # Убираем окно с экрана

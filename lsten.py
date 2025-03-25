@@ -21,7 +21,7 @@ class Listen:
         """
         if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Эмуляция Ctrl+c
-            f.press_ctrl("c")
+            f.press_ctrl("c", C.TIME_DELAY_CTRL_C)
             # Генерация сигнала "Начало диалога"
             self.signals_dialogue.start_dialogue.emit()
 
