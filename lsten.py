@@ -10,8 +10,8 @@ from dialogue import SignalsDialogue
 class Listen:
     """Класс для прослушивания клавиатуры"""
 
-    def __init__(self, key_handler: SignalsDialogue):
-        self.key_handler = key_handler  # Сигнал отпускания клавиши вызова диалога
+    def __init__(self, signals_dialogue: SignalsDialogue):
+        self.signals_dialogue = signals_dialogue  # Сигналы старт/стоп Dialogue
 
     def on_release(self, key: Key | KeyCode) -> None:
         """
@@ -22,8 +22,8 @@ class Listen:
         if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Эмуляция Ctrl+c
             f.press_ctrl("c")
-            # Генерация сигнала "Нажатие клавиши вызова"
-            self.key_handler.start_dialogue.emit()
+            # Генерация сигнала "Начало диалога"
+            self.signals_dialogue.start_dialogue.emit()
 
     def listen(self):
         """Прослушивание клавиатуры"""

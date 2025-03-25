@@ -16,5 +16,3 @@ with Listener(on_press=lambda key: print(f"Нажато: {key}")) as l:
 # import json
 # with open(file="config.json", mode="w") as f:
 #     json.dump(en_to_ru, f)
-
-# При необходимости можно вставить в модуль main.py
