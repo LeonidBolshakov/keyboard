@@ -2,7 +2,6 @@
 
 from pynput.keyboard import Key, KeyCode, Listener
 
-import functions as f
 from const import Const as C
 import signalsdialogue
 
@@ -22,8 +21,6 @@ class Listen:
         :return: None
         """
         if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
-            # Эмуляция Ctrl+c
-            f.press_ctrl("c", C.TIME_DELAY_CTRL_C)
             # Генерация сигнала "Начало диалога"
             self.signals_dialogue.start_dialogue.emit()
 

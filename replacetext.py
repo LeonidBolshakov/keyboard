@@ -16,11 +16,17 @@ class ReplaceText:
         """
         text_output = []
         for symbol in text_input:
-            if symbol in en_to_ru:
-                text_output.append(en_to_ru[symbol])
-            elif symbol in self.ru_to_en:
-                text_output.append(self.ru_to_en[symbol])
+            if symbol in en_to_ru:  # Если символ на английском регистре
+                text_output.append(
+                    en_to_ru[symbol]
+                )  # заменяем его на символ в русском регистре на той же клавише
+            elif symbol in self.ru_to_en:  # Если символ на русском регистре
+                text_output.append(
+                    self.ru_to_en[symbol]
+                )  # заменяем его на символ в английском регистре на той же клавише
             else:
-                text_output.append(symbol)
+                text_output.append(
+                    symbol
+                )  # Если символ вне регистров, оставляем его без изменения
 
         return "".join(text_output)

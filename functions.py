@@ -11,6 +11,7 @@ from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
 
 from const import Const as C
+from replacetext import ReplaceText
 
 
 def press_ctrl(s: str, time_delay: int | float) -> None:
@@ -20,14 +21,14 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время задержки после нажатия клавиши
     :return: None
     """
-    hotkey("ctrl", s)
-    logger.debug(f"ctrl+{s}")
+    hotkey(C.CTRL, s)
+    logger.debug(f"{C.LOGGER_TEXT_PRESS_CTRL}{s}")
 
     # Ждём завершения команда Ctrl + {s}
     sleep(float(time_delay))  # QTimer() отрабатывает некорректно.
 
 
-def text_to_clipboard(text: str) -> None:
+def put_clipboard(text: str) -> None:
     """Записываем текст в буфер обмена"""
     clipboard = QApplication.clipboard()
     if clipboard:
@@ -49,12 +50,6 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
     # Определяем, что если на кнопке установлен фокус, то при нажатии Enter она считается нажатой.
     button.setAutoDefault(True)
-
-
-def on_Cancel() -> None:
-    """Выгружаем программу"""
-    logger.info("Program unloaded")
-    QApplication.quit()
 
 
 def show_message(
@@ -81,3 +76,61 @@ def show_message(
         QTimer.singleShot(int(show_seconds * 1000), ok_button.click)
 
     msg_box.exec()
+
+
+def replace_selected_text():
+    """Заменяем выделенный текст"""
+    press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
+
+
+def get_clipboard() -> str:
+    """Возвращаем текст буфера обмена"""
+    if QApplication.clipboard():
+        return QApplication.clipboard().text()
+    else:
+        return ""
+
+
+def get_replacement_option(text: str) -> str:
+    """
+    Находим вариант замены текста
+    :param text: (str). Исходный текст
+    :return: (str). Вариант замены
+    """
+    return ReplaceText().swap_keyboard_layout(text)
+
+
+def get_selection() -> str:
+    """
+    Копирование выделенного текста в буфер обмена
+    :return: (str).
+    """
+    n = 0
+    time_delay = 0
+    while n < C.MAX_CLIPBOARD_READS:
+        text_from_clipboard = _get_selection(time_delay)
+        if text_from_clipboard:
+            logger.info(f"{C.LOGGER_TEXT_BEEN_READ} *'{text_from_clipboard}'*")
+            return text_from_clipboard
+        logger.info(f"{C.LOGGER_TEXT_NO_BEEN_READ} {time_delay}")
+        # Подготовка к следующей итерации
+        time_delay += C.TIME_DELAY_CTRL_C
+        n += 1
+
+    logger.info(f"{C.LOGGER_TEXT_ERROR_READ}")
+    return ""
+
+
+def _get_selection(time_delay: float) -> str | None:
+    """
+    Считывает выделенный текст в буфер обмена.
+    Если текст в буфер обмена не успел считаться, то возвращается C.EMPTY_TEXT
+    :param time_delay: (float) - время задержки проверки после нажатия клавиш Ctrl+C
+    :return: (str) Текст, считанный из
+    """
+    empty_text = C.EMPTY_TEXT
+    put_clipboard(empty_text)
+    press_ctrl("c", time_delay)
+    text_from_clipboard = get_clipboard()
+
+    return text_from_clipboard if text_from_clipboard != empty_text else None

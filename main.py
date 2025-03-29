@@ -33,21 +33,19 @@ def start_keyboard_listening() -> None:
 def init_logging():
     logging.basicConfig(
         level=logging.INFO,
-        filename="keyboard.log",
-        format="%(asctime)s %(levelname)s %(message)s",
+        filename=C.LOGGER_FILE_NAME,
+        format=C.LOGGER_FORMAT,
     )
-    logging.info("Program loaded")
 
 
 if __name__ == "__main__":
     # Блокируем вывод сообщений о GPA
-    environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
+    environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
 
     # Проверка повторного запуска.
     shared_memory = QSharedMemory(C.UUID_PROGRAM)
     shared_memory.attach()
     if shared_memory.data():
-        logging.warning("Recalling the program")
         is_restart_program = True
     else:
         shared_memory.create(1)

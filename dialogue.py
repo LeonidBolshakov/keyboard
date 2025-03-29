@@ -2,18 +2,19 @@
 
 import sys
 from pathlib import Path
+import logging
+
+logger = logging.getLogger()
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QCoreApplication
 from PyQt6.QtWidgets import (
     QTextBrowser,
     QMainWindow,
-    QApplication,
     QDialogButtonBox,
     QPushButton,
 )
 
-from replacetext import ReplaceText
 from const import Const as C
 import signalsdialogue
 import functions as f
@@ -40,6 +41,7 @@ class Dialogue(QMainWindow):
 
         # При повторном запуске программы процесс прекращается.
         if restart_program:
+            logging.warning(C.LOGGER_TEXT_RESTART_PROGRAM)
             f.show_message(
                 C.TEXT_MESSAGE_RESTART_PROGRAM,
                 C.TIME_MESSAGE_RESTART_PROGRAM,
@@ -48,6 +50,7 @@ class Dialogue(QMainWindow):
             sys.exit(1)
 
         # Информирование пользователя о загрузке программы
+        logging.info(C.LOGGER_TEXT_LOAD_PROGRAM)
         f.show_message(
             f"{C.TEXT_MESSAGE_START_PROGRAM} {C.KEY_BEGIN_DIALOGUE}",
             C.TIME_MESSAGE_START_PROGRAM,
@@ -72,7 +75,7 @@ class Dialogue(QMainWindow):
             case Qt.Key.Key_2:  # Отказ от замены
                 self.on_No()
             case Qt.Key.Key_3:  # Выгрузить программу
-                f.on_Cancel()
+                self.on_Cancel()
             case _:
                 # Для остальных клавиш передаём обработку системе
                 super().keyPressEvent(event)
@@ -88,7 +91,7 @@ class Dialogue(QMainWindow):
         """Загрузка UI и атрибутов полей в объект класса"""
         exe_directory = (  # Директория, из которой была запущена программа
             Path(sys.argv[0]).parent
-            if hasattr(sys, "frozen")  # exe файл, получен с помощью PyInstaller
+            if hasattr(sys, C.HASATTR_FROZEN)  # exe файл, получен с помощью PyInstaller
             else Path(__file__).parent  # Файл запущен как обычный Python-скрипт
         )
 
@@ -107,7 +110,7 @@ class Dialogue(QMainWindow):
         """Назначаем обработчики событий для клика кнопок"""
         self.yes_button.clicked.connect(self.on_Yes)
         self.no_button.clicked.connect(self.on_No)
-        self.cancel_button.clicked.connect(f.on_Cancel)
+        self.cancel_button.clicked.connect(self.on_Cancel)
 
     def custom_UI(self):
         """Пользовательская настройка интерфейса"""
@@ -124,30 +127,32 @@ class Dialogue(QMainWindow):
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
 
-    def remember_clipboard(self):
-        """Запоминаем буфер обмена"""
-        self.clipboard_text = QApplication.clipboard().text()
+    def show_original_text(self, original_text: str):
+        """
+        Вывод на дисплей буфера обмена
+        :param original_text: (str)/ Текст буфера обмена
+        :return:
+        """
+        self.txtBrowSource.setText(original_text)
 
-    def display_clipboard(self):
-        """Визуализируем буфер обмена"""
-        self.txtBrowSource.setText(self.clipboard_text)
-
-    def display_replacements(self):
-        """Рассчитываем и отображаем вариант замены текста."""
-
-        replace_text = ReplaceText()
-        self.txtBrowReplace.setText(
-            replace_text.swap_keyboard_layout(self.clipboard_text)
-        )
+    def show_replacements(self, replacement_option_text: str) -> None:
+        """Отображаем вариант замены текста."""
+        self.txtBrowReplace.setText(replacement_option_text)
 
     def on_Yes(self):
         """Заменяем выделенный текст предложенным вариантом замены"""
-        f.text_to_clipboard(self.txtBrowReplace.toPlainText())
+        f.put_clipboard(self.txtBrowReplace.toPlainText())
         self.hide()  # Освобождаем фокус для окна с выделенным текстом
         self.signals_dialogue.parameter_for_signal = (
-            1  # указание головной программе вставить текст из буфера обмена
+            1  # указание вставить текст из буфера обмена в выделенный текст
         )
         self.signals_dialogue.stop_dialogue.emit()
+
+    @staticmethod
+    def on_Cancel() -> None:
+        """Выгружаем программу"""
+        logger.info(C.LOGGER_TEXT_UNLOAD_PROGRAM)
+        QCoreApplication.quit()
 
     def on_No(self):
         """Отказ от замены текста"""
@@ -157,9 +162,13 @@ class Dialogue(QMainWindow):
         self.signals_dialogue.stop_dialogue.emit()
 
     def processing_clipboard(self):
-        self.remember_clipboard()  # запоминаем буфера обмена
-        self.display_clipboard()  # Визуализируем буфера обмена
-        self.display_replacements()  # Рассчитываем и отображаем вариант замены теста
+        old_clipboard_text = f.get_clipboard()  # запоминаем буфера обмена
+        clipboard_text = f.get_selection()
+
+        self.show_original_text(clipboard_text)  # Визуализируем буфера обмена
+        self.show_replacements(
+            f.get_replacement_option(clipboard_text)
+        )  # Отображаем найденный вариант замены теста
 
     def window_show(self) -> None:
         """
@@ -174,15 +183,15 @@ class Dialogue(QMainWindow):
         self.activateWindow()
 
     def window_hide(self) -> None:
-        """выполняем команду, заданную в параметре сигнала и останавливаем работу с диалогом"""
+        """Выполняем команду, заданную в параметре сигнала и останавливаем работу с диалогом"""
 
         rc = self.signals_dialogue.parameter_for_signal
-        # Обрабатываем ко
+        # Обрабатываем параметр сигнала
         match rc:
             case 0:  # Выгрузка программы
                 pass
             case 1:  # Заменяем выделенный текст
-                f.press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
+                f.replace_selected_text()
             case 2:  # Отказ от замены текста
                 pass
             case _:  # Непредусмотренная команда
@@ -190,4 +199,5 @@ class Dialogue(QMainWindow):
                     f"{C.TEXT_CRITICAL_ERROR_1} {self.signals_dialogue.parameter_for_signal =}"
                 )
 
+        # Останавливаем работу с диалогом
         self.hide()  # Убираем окно с экрана
