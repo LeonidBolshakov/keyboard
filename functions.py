@@ -6,12 +6,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
 
 from const import Const as C
-import name
 
 
 def press_ctrl(s: str, time_delay: int | float) -> None:
@@ -59,7 +58,7 @@ def on_Cancel() -> None:
 
 
 def show_message(
-    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.
@@ -82,40 +81,3 @@ def show_message(
         QTimer.singleShot(int(show_seconds * 1000), ok_button.click)
 
     msg_box.exec()
-
-
-def window_show() -> None:
-    """
-    Показ окна диалога.
-    :return: None
-    """
-    window = name.window
-    # Поднимаем окно над остальными окнами
-    if window:
-        # Поднимаем окно над всеми окнами
-        window.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
-        window.processing_clipboard()  # Обрабатываем буфер обмена
-        window.show()  # Выводим окно на экран
-        # Делаем окно доступным для ввода с клавиатуры
-        window.activateWindow()
-    else:
-        logger.critical(f"{C.TEXT_CRITICAL_ERROR_2}")
-
-
-def window_hide() -> None:
-    """Останавливаем работу с диалогом"""
-    window = name.window
-    rc = name.ret_code_dialogue
-    # Обрабатываем ко
-    match rc:
-        case 0:  # Выгрузка программы
-            pass
-        case 1:  # Заменяем выделенный текст
-            press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
-        case 2:  # Отказ от замены текста
-            pass
-        case _:  # Непредусмотренная команда
-            logger.critical(f"{C.TEXT_CRITICAL_ERROR_1} {name.ret_code_dialogue=}")
-
-    if window:
-        window.hide()  # Убираем окно с экрана

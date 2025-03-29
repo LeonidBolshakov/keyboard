@@ -21,7 +21,6 @@ class Const:
     TEXT_CRITICAL_ERROR_1 = (
         "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
     )
-    TEXT_CRITICAL_ERROR_2 = "Ошибка в программе. Функция f.window_show. Переменная name.window не инициализирована"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"

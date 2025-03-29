@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt, QObject, pyqtSignal
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QTextBrowser,
     QMainWindow,
@@ -15,15 +15,8 @@ from PyQt6.QtWidgets import (
 
 from replacetext import ReplaceText
 from const import Const as C
-import name
+import signalsdialogue
 import functions as f
-
-
-class SignalsDialogue(QObject):
-    """Класс сигналов запуска и останова Dialogue"""
-
-    start_dialogue = pyqtSignal()
-    stop_dialogue = pyqtSignal()
 
 
 # noinspection PyUnresolvedReferences
@@ -38,12 +31,9 @@ class Dialogue(QMainWindow):
     no_button: QPushButton
     cancel_button: QPushButton
 
-    def __init__(
-        self, signals_dialogue: SignalsDialogue, restart_program: bool
-    ) -> None:
+    def __init__(self, restart_program: bool) -> None:
         """
         Создание объекта класса
-        :param signals_dialogue: (SignalsDialogue) - сигналы запуска и останова Dialogue
         :param restart_program: (bool) - признак повторного запуска программы
         """
         super().__init__()
@@ -64,7 +54,7 @@ class Dialogue(QMainWindow):
             C.COLOR_MESSAGE_START_PROGRAM,
         )
 
-        self.signals_dialogue = signals_dialogue
+        self.signals_dialogue = signalsdialogue.signals_dialogue
         self.clipboard_text = ""
 
         self.init_UI()  # Загружаем файл, сформированный Qt Designer
@@ -90,7 +80,7 @@ class Dialogue(QMainWindow):
     def closeEvent(self, event):
         """Переопределение метода. Перехватываем закрытие окна Пользователем"""
         # При закрытии окна пользователем сигнализируем об остановке диалога, но программу из памяти не выгружаем
-        name.ret_code_dialogue = 0
+        self.signals_dialogue.parameter_for_signal = 0
         self.signals_dialogue.stop_dialogue.emit()
         event.ignore()
 
@@ -153,18 +143,51 @@ class Dialogue(QMainWindow):
     def on_Yes(self):
         """Заменяем выделенный текст предложенным вариантом замены"""
         f.text_to_clipboard(self.txtBrowReplace.toPlainText())
-        name.window.hide()  # Освобождаем фокус для окна с выделенным текстом
-        name.ret_code_dialogue = (
+        self.hide()  # Освобождаем фокус для окна с выделенным текстом
+        self.signals_dialogue.parameter_for_signal = (
             1  # указание головной программе вставить текст из буфера обмена
         )
         self.signals_dialogue.stop_dialogue.emit()
 
     def on_No(self):
         """Отказ от замены текста"""
-        name.ret_code_dialogue = 2  # указание головной программе не заменять текст
+        self.signals_dialogue.parameter_for_signal = (
+            2  # указание головной программе не заменять текст
+        )
         self.signals_dialogue.stop_dialogue.emit()
 
     def processing_clipboard(self):
         self.remember_clipboard()  # запоминаем буфера обмена
         self.display_clipboard()  # Визуализируем буфера обмена
         self.display_replacements()  # Рассчитываем и отображаем вариант замены теста
+
+    def window_show(self) -> None:
+        """
+        Показ окна диалога.
+        :return: None
+        """
+        # Поднимаем окно над всеми окнами
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
+        self.processing_clipboard()  # Обрабатываем буфер обмена
+        self.show()  # Выводим окно на экран
+        # Делаем окно доступным для ввода с клавиатуры
+        self.activateWindow()
+
+    def window_hide(self) -> None:
+        """выполняем команду, заданную в параметре сигнала и останавливаем работу с диалогом"""
+
+        rc = self.signals_dialogue.parameter_for_signal
+        # Обрабатываем ко
+        match rc:
+            case 0:  # Выгрузка программы
+                pass
+            case 1:  # Заменяем выделенный текст
+                f.press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
+            case 2:  # Отказ от замены текста
+                pass
+            case _:  # Непредусмотренная команда
+                logger.critical(
+                    f"{C.TEXT_CRITICAL_ERROR_1} {self.signals_dialogue.parameter_for_signal =}"
+                )
+
+        self.hide()  # Убираем окно с экрана

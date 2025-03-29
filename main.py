@@ -9,28 +9,23 @@ from lsten import Listen
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import QSharedMemory
 
-from dialogue import Dialogue, SignalsDialogue
-import name
-import functions as f
+from dialogue import Dialogue
 from const import Const as C
+import signalsdialogue
 
 
-def create_signals_dialogue() -> SignalsDialogue:
-    """Создаём сигналы и связываем их с функциями обработки"""
+def setup_connections(_window) -> None:
+    """Связываем сигналы с функциями обработки"""
 
-    # Создаём объект сигналов
-    _signals_dialogue = SignalsDialogue()
+    signals_dialogue = signalsdialogue.signals_dialogue
 
-    # Привязываем сигналы обработки
-    _signals_dialogue.start_dialogue.connect(f.window_show)
-    _signals_dialogue.stop_dialogue.connect(f.window_hide)
-
-    return _signals_dialogue
+    signals_dialogue.start_dialogue.connect(_window.window_show)
+    signals_dialogue.stop_dialogue.connect(_window.window_hide)
 
 
 def start_keyboard_listening() -> None:
     """Запускаем прослушивание клавиатуры"""
-    listen = Listen(signals_dialogue)
+    listen = Listen()
     listener_thread = threading.Thread(target=listen.listen, daemon=True)
     listener_thread.start()
 
@@ -59,12 +54,10 @@ if __name__ == "__main__":
         init_logging()
         is_restart_program = False
 
-    # Создаём сигналы старта и остановки работы класса dialogue
-    signals_dialogue = create_signals_dialogue()
-
     # Создаем главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
-    name.window = Dialogue(signals_dialogue, is_restart_program)
+    window = Dialogue(is_restart_program)
+    setup_connections(window)
 
     # Запускаем прослушивание клавиатуры
     start_keyboard_listening()
