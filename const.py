@@ -37,7 +37,8 @@ class Const:
     )
     LOGGER_TEXT_PRESS_CTRL = "Нажали ctrl"
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
-    LOGGER_TEXT_UNLOAD_PROGRAM = "Программа загружена"
+    LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
+    LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"

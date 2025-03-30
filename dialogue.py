@@ -34,7 +34,7 @@ class Dialogue(QMainWindow):
 
     def __init__(self, restart_program: bool) -> None:
         """
-        Создание объекта класса
+        Инициализация объекта класса
         :param restart_program: (bool) - признак повторного запуска программы
         """
         super().__init__()
@@ -56,6 +56,8 @@ class Dialogue(QMainWindow):
             C.TIME_MESSAGE_START_PROGRAM,
             C.COLOR_MESSAGE_START_PROGRAM,
         )
+
+        self.old_clipboard_text = ""
 
         self.signals_dialogue = signalsdialogue.signals_dialogue
         self.clipboard_text = ""
@@ -162,7 +164,6 @@ class Dialogue(QMainWindow):
         self.signals_dialogue.stop_dialogue.emit()
 
     def processing_clipboard(self):
-        old_clipboard_text = f.get_clipboard()  # запоминаем буфера обмена
         clipboard_text = f.get_selection()
 
         self.show_original_text(clipboard_text)  # Визуализируем буфера обмена
@@ -175,6 +176,7 @@ class Dialogue(QMainWindow):
         Показ окна диалога.
         :return: None
         """
+        self.old_clipboard_text = f.get_clipboard()  # запоминаем буфер обмена
         # Поднимаем окно над всеми окнами
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.processing_clipboard()  # Обрабатываем буфер обмена
@@ -200,4 +202,5 @@ class Dialogue(QMainWindow):
                 )
 
         # Останавливаем работу с диалогом
+        f.put_clipboard(self.old_clipboard_text)  # восстанавливаем буфер обмена
         self.hide()  # Убираем окно с экрана

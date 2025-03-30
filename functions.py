@@ -6,6 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
+import pyperclip
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
@@ -21,8 +22,9 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время задержки после нажатия клавиши
     :return: None
     """
+    sleep(float(time_delay))
     hotkey(C.CTRL, s)
-    logger.debug(f"{C.LOGGER_TEXT_PRESS_CTRL}{s}")
+    logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
     # Ждём завершения команда Ctrl + {s}
     sleep(float(time_delay))  # QTimer() отрабатывает некорректно.
@@ -30,9 +32,7 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
 
 def put_clipboard(text: str) -> None:
     """Записываем текст в буфер обмена"""
-    clipboard = QApplication.clipboard()
-    if clipboard:
-        clipboard.setText(text)
+    pyperclip.copy(text)
 
 
 def making_button_settings(button: QPushButton, text: str, qss: str = "") -> None:
@@ -53,7 +53,7 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
 
 def show_message(
-        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.
@@ -80,7 +80,9 @@ def show_message(
 
 def replace_selected_text():
     """Заменяем выделенный текст"""
+    text_from_clipboard = get_clipboard()
     press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
+    logger.info(f"{C.LOGGER_TEXT_WRITE} *'{text_from_clipboard}'*")
 
 
 def get_clipboard() -> str:

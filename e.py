@@ -1,43 +1,49 @@
-import keyboard
-import win32clipboard
-import win32con
-import time
+from time import sleep
+import sys
+
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLayout
+from pyautogui import hotkey
 
 
-def get_clipboard_text():
-    win32clipboard.OpenClipboard()
-    try:
-        text = win32clipboard.GetClipboardData(win32con.CF_UNICODETEXT)
-    except:
-        text = ""
-    finally:
-        win32clipboard.CloseClipboard()
-    return text
+class SimpleApp(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        # Инициализация интерфейса
+        self.initUI()
+
+    def initUI(self):
+        # Создаем кнопку и метку
+        self.button = QPushButton("Нажми меня", self)
+        self.label = QLabel("Привет, мир!", self)
+
+        # Подключаем сигнал нажатия кнопки к слоту изменения текста
+        self.button.clicked.connect(self.onButtonClick)
+
+        # Создаем вертикальный лейаут и добавляем в него виджеты
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.button)
+
+        # Устанавливаем лейаут для главного окна
+        self.setLayout(layout)
+
+        # Настраиваем окно
+        self.setWindowTitle("Простое приложение")
+        self.setGeometry(100, 100, 300, 200)
+
+    def onButtonClick(self):
+        # Изменяем текст метки при нажатии на кнопку
+
+        QApplication.clipboard().setText("aaa")
+        hotkey("ctrl", "v")
+        sleep(1)
+        QApplication.clipboard().setText("bbb")
+        self.label.setText("Кнопка нажата!")
 
 
-def copy_selected_text():
-    # Очищаем буфер обмена
-    win32clipboard.OpenClipboard()
-    win32clipboard.EmptyClipboard()
-    win32clipboard.CloseClipboard()
-
-    # Эмулируем нажатие Ctrl+C с помощью keyboard
-    keyboard.press_and_release("ctrl+c")
-
-    # Задержка для обработки
-    time.sleep(0.5)
-
-    return get_clipboard_text()
-
-
-# Функция, которая будет вызываться по горячей клавише
-def on_hotkey():
-    text = copy_selected_text()
-    print(text)
-    # processed_text = text.upper()  # пример обработки
-    # paste_text(processed_text)
-
-
-# Регистрируем горячую клавишу (например, Ctrl+Shift+X)
-keyboard.add_hotkey("ctrl+shift+x", on_hotkey)
-keyboard.wait()  # Ждем нажатия клавиш
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = SimpleApp()
+    window.show()
+    sys.exit(app.exec())
