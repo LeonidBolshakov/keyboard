@@ -19,7 +19,7 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     """
     Эмулировать нажатие клавиш Ctrl+символ.
     :param s: (str). Символ, нажимаемый вместе с Ctrl
-    :param time_delay: (int | float). Время задержки после нажатия клавиши
+    :param time_delay: (int | float). Время задержки до и после нажатия клавиши
     :return: None
     """
     sleep(float(time_delay))
@@ -104,7 +104,7 @@ def get_replacement_option(text: str) -> str:
 
 def get_selection() -> str:
     """
-    Копирование выделенного текста в буфер обмена
+    Возвращаем выделенный текст
     :return: (str).
     """
     n = 0

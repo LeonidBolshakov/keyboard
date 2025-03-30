@@ -39,7 +39,7 @@ class Dialogue(QMainWindow):
         """
         super().__init__()
 
-        # При повторном запуске программы процесс прекращается.
+        # При повторном запуске программы повторный процесс прекращается.
         if restart_program:
             logging.warning(C.LOGGER_TEXT_RESTART_PROGRAM)
             f.show_message(
@@ -49,7 +49,11 @@ class Dialogue(QMainWindow):
             )
             sys.exit(1)
 
-        # Информирование пользователя о загрузке программы
+        # Если прежний диалог не закончен - новый не начинаем
+        if not self.isHidden():
+            return
+
+        # Информирование о загрузке программы
         logging.info(C.LOGGER_TEXT_LOAD_PROGRAM)
         f.show_message(
             f"{C.TEXT_MESSAGE_START_PROGRAM} {C.KEY_BEGIN_DIALOGUE}",
@@ -64,7 +68,7 @@ class Dialogue(QMainWindow):
 
         self.init_UI()  # Загружаем файл, сформированный Qt Designer
         self.init_var()  # Инициализируем переменные
-        self.connect()  # Назначаем обработчики событий
+        self.set_connect()  # Назначаем обработчики событий
         self.custom_UI()  # Делаем пользовательские настройки интерфейса
 
     def keyPressEvent(self, event):
@@ -108,7 +112,7 @@ class Dialogue(QMainWindow):
             QDialogButtonBox.StandardButton.Cancel
         )
 
-    def connect(self):
+    def set_connect(self):
         """Назначаем обработчики событий для клика кнопок"""
         self.yes_button.clicked.connect(self.on_Yes)
         self.no_button.clicked.connect(self.on_No)
@@ -168,18 +172,20 @@ class Dialogue(QMainWindow):
 
         self.show_original_text(clipboard_text)  # Визуализируем буфера обмена
         self.show_replacements(
-            f.get_replacement_option(clipboard_text)
-        )  # Отображаем найденный вариант замены теста
+            f.get_replacement_option(clipboard_text)  # Находим вариант замены
+        )  # Отображаем вариант замены теста
 
     def window_show(self) -> None:
         """
         Показ окна диалога.
         :return: None
         """
+        if not self.isHidden():  # Если диалог не закончен - новый не начинаем
+            return
         self.old_clipboard_text = f.get_clipboard()  # запоминаем буфер обмена
         # Поднимаем окно над всеми окнами
-        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.processing_clipboard()  # Обрабатываем буфер обмена
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.show()  # Выводим окно на экран
         # Делаем окно доступным для ввода с клавиатуры
         self.activateWindow()
@@ -187,9 +193,9 @@ class Dialogue(QMainWindow):
     def window_hide(self) -> None:
         """Выполняем команду, заданную в параметре сигнала и останавливаем работу с диалогом"""
 
-        rc = self.signals_dialogue.parameter_for_signal
+        command = self.signals_dialogue.parameter_for_signal
         # Обрабатываем параметр сигнала
-        match rc:
+        match command:
             case 0:  # Выгрузка программы
                 pass
             case 1:  # Заменяем выделенный текст

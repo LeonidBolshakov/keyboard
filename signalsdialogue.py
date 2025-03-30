@@ -1,4 +1,4 @@
-"""Модуль с общими имена программы"""
+"""Класс и объект сигналов запуска и останова Dialogue"""
 
 from PyQt6.QtCore import QObject, pyqtSignal
 
@@ -14,4 +14,5 @@ class SignalsDialogue(QObject):
         self.parameter_for_signal = -1
 
 
+# Объект сигналов запуска и останова Dialogue
 signals_dialogue = SignalsDialogue()

@@ -31,6 +31,7 @@ def start_keyboard_listening() -> None:
 
 
 def init_logging():
+    """Стартуем систему логирования"""
     logging.basicConfig(
         level=logging.INFO,
         filename=C.LOGGER_FILE_NAME,
