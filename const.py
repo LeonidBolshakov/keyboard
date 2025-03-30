@@ -32,6 +32,9 @@ class Const:
     LOGGER_TEXT_BEEN_READ = "В буфер обмена считан выделенный текст"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
     LOGGER_TEXT_LOAD_PROGRAM = "Программа загружена"
+    LOGGER_TEXT_NO_ACTIVATE_WINDOW = (
+        "refocus_window. Окно с выделенным текстом не активировалось."
+    )
     LOGGER_TEXT_NO_BEEN_READ = (
         "Неудачная попытка чтения выделенного текста. Время задержки ="
     )

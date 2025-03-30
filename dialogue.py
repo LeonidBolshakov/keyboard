@@ -183,6 +183,7 @@ class Dialogue(QMainWindow):
         if not self.isHidden():  # Если диалог не закончен - новый не начинаем
             return
         self.old_clipboard_text = f.get_clipboard()  # запоминаем буфер обмена
+        f.refocus_window()
         # Поднимаем окно над всеми окнами
         self.processing_clipboard()  # Обрабатываем буфер обмена
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)

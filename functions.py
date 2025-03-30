@@ -6,6 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
+import pygetwindow as gw
 import pyperclip
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor
@@ -136,3 +137,12 @@ def _get_selection(time_delay: float) -> str | None:
     text_from_clipboard = get_clipboard()
 
     return text_from_clipboard if text_from_clipboard != empty_text else None
+
+
+def refocus_window() -> None:
+    window = gw.getActiveWindow()
+    if window:
+        window.activate()
+        sleep(0.3)
+    else:
+        logger.warning(C.LOGGER_TEXT_NO_ACTIVATE_WINDOW)
