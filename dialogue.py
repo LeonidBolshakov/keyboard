@@ -60,8 +60,6 @@ class Dialogue(QMainWindow):
         self.clipboard_text = ""
         self.is_restore_clipboard = True
 
-        self.signals_dialogue = signalsdialogue.signals_dialogue
-
         self.init_UI()  # Загружаем файл, сформированный Qt Designer
         self.init_var()  # Инициализируем переменные
         self.set_connect()  # Назначаем обработчики событий
@@ -85,8 +83,7 @@ class Dialogue(QMainWindow):
     def closeEvent(self, event):
         """Переопределение метода. Перехватываем закрытие окна Пользователем"""
         # При закрытии окна пользователем сигнализируем об остановке диалога, но программу из памяти не выгружаем
-        self.signals_dialogue.parameter_for_signal = 0
-        self.signals_dialogue.stop_dialogue.emit()
+        self.window_hide(1)
         event.ignore()
 
     def init_UI(self) -> None:
@@ -149,11 +146,7 @@ class Dialogue(QMainWindow):
         """Заменяем выделенный текст предложенным вариантом замены"""
         f.put_clipboard(self.txtBrowReplace.toPlainText())
         self.hide()  # Освобождаем фокус для окна с выделенным текстом
-        self.signals_dialogue.parameter_for_signal = (
-            1  # указание вставить текст из буфера обмена в выделенный текст
-        )
-        self.window_hide()
-        self.signals_dialogue.stop_dialogue.emit()
+        self.window_hide(1)
 
     @staticmethod
     def on_Cancel() -> None:
@@ -163,10 +156,7 @@ class Dialogue(QMainWindow):
 
     def on_No(self):
         """Отказ от замены текста"""
-        self.signals_dialogue.parameter_for_signal = (
-            2  # указание головной программе не заменять текст
-        )
-        self.signals_dialogue.stop_dialogue.emit()
+        self.window_hide(2)
 
     def processing_clipboard(self):
         clipboard_text = f.get_selection()
@@ -210,10 +200,9 @@ class Dialogue(QMainWindow):
             logger.info(f"Восстановленный буфер обмена *'{self.old_clipboard_text}'*")
         self.hide()  # Убираем окно с экрана
 
-    def window_hide(self) -> None:
-        """Выполняем команду, заданную в параметре сигнала и останавливаем работу с диалогом"""
+    def window_hide(self, command: int) -> None:
+        """Выполняем команду, заданную в параметре и останавливаем работу с диалогом"""
 
-        command = self.signals_dialogue.parameter_for_signal
         # Обрабатываем параметр сигнала
         match command:
             case 0:  # Выгрузка программы
@@ -223,8 +212,6 @@ class Dialogue(QMainWindow):
             case 2:  # Отказ от замены текста
                 pass
             case _:  # Непредусмотренная команда
-                logger.critical(
-                    f"{C.TEXT_CRITICAL_ERROR_1} {self.signals_dialogue.parameter_for_signal =}"
-                )
+                logger.critical(f"{C.TEXT_CRITICAL_ERROR_1} {self.command =}")
 
         self.stop_dialogue()

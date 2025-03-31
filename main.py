@@ -20,7 +20,6 @@ def setup_connections(_window) -> None:
     signals_dialogue = signalsdialogue.signals_dialogue
 
     signals_dialogue.start_dialogue.connect(_window.window_show)
-    signals_dialogue.stop_dialogue.connect(_window.window_hide)
 
 
 def start_keyboard_listening() -> None:
