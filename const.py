@@ -38,7 +38,8 @@ class Const:
     LOGGER_TEXT_NO_BEEN_READ = (
         "Неудачная попытка чтения выделенного текста. Время задержки ="
     )
-    LOGGER_TEXT_PRESS_CTRL = "Нажали ctrl"
+    LOGGER_TEXT_PASTE = "Пользователь вставил исходный текст -  "
+    LOGGER_TEXT_PRESS_CTRL = "Эмулировали нажатие ctrl"
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"

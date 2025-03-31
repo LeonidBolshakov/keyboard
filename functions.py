@@ -141,6 +141,7 @@ def _get_selection(time_delay: float) -> str | None:
 
 def refocus_window() -> None:
     window = gw.getActiveWindow()
+    logger.info(f"Окно с выделенным текстом - {window.title}")
     if window:
         window.activate()
         sleep(0.3)
