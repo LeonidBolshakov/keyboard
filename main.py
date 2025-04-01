@@ -11,15 +11,14 @@ from PyQt6.QtCore import QSharedMemory
 
 from dialogue import Dialogue
 from const import Const as C
-import signalsdialogue
+import signals
 
 
 def setup_connections(_window) -> None:
-    """Связываем сигналы с функциями обработки"""
+    """Связываем сигнал с функцией обработки"""
 
-    signals_dialogue = signalsdialogue.signals_dialogue
-
-    signals_dialogue.start_dialogue.connect(_window.window_show)
+    _signals = signals.signals
+    _signals.start_dialogue.connect(_window.start_dialogue)
 
 
 def start_keyboard_listening() -> None:
@@ -42,7 +41,7 @@ if __name__ == "__main__":
     # Блокируем вывод сообщений о GPA
     environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
 
-    # Проверка повторного запуска.
+    # Проверка повторного запуска программы.
     shared_memory = QSharedMemory(C.UUID_PROGRAM)
     shared_memory.attach()
     if shared_memory.data():
@@ -52,7 +51,7 @@ if __name__ == "__main__":
         init_logging()
         is_restart_program = False
 
-    # Создаем главное окно диалога. Окно не высвечиваем.
+    # Создаем приложение и главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
     window = Dialogue(is_restart_program)
     setup_connections(window)

@@ -7,11 +7,10 @@ import logging
 logger = logging.getLogger()
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt, QCoreApplication
+from PyQt6.QtCore import Qt, QCoreApplication, QTimer
 from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton, QTextBrowser
 
 from const import Const as C
-import signalsdialogue
 import functions as f
 
 
@@ -83,7 +82,7 @@ class Dialogue(QMainWindow):
     def closeEvent(self, event):
         """Переопределение метода. Перехватываем закрытие окна Пользователем"""
         # При закрытии окна пользователем сигнализируем об остановке диалога, но программу из памяти не выгружаем
-        self.window_hide(1)
+        self.stop_dialogue(1)
         event.ignore()
 
     def init_UI(self) -> None:
@@ -111,7 +110,7 @@ class Dialogue(QMainWindow):
         self.no_button.clicked.connect(self.on_No)
         self.cancel_button.clicked.connect(self.on_Cancel)
 
-        self.txtBrowSource.textChanged.connect(self.paste_original_text)
+        self.txtBrowSource.textChanged.connect(self.change_original_text)
 
     def custom_UI(self):
         """Пользовательская настройка интерфейса"""
@@ -128,10 +127,10 @@ class Dialogue(QMainWindow):
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
 
-    def show_original_text(self, original_text: str):
+    def show_original_text(self, original_text: str) -> None:
         """
-        Вывод на дисплей буфера обмена
-        :param original_text: (str)/ Текст буфера обмена
+        Отображаем текст пользователя
+        :param original_text: (str)/ текст пользователя
         :return:
         """
         self.txtBrowSource.setText(original_text)
@@ -146,62 +145,54 @@ class Dialogue(QMainWindow):
         """Заменяем выделенный текст предложенным вариантом замены"""
         f.put_clipboard(self.txtBrowReplace.toPlainText())
         self.hide()  # Освобождаем фокус для окна с выделенным текстом
-        self.window_hide(1)
+        self.stop_dialogue(1)
 
     @staticmethod
     def on_Cancel() -> None:
         """Выгружаем программу"""
         logger.info(C.LOGGER_TEXT_UNLOAD_PROGRAM)
-        QCoreApplication.quit()
+        QTimer.singleShot(0, QCoreApplication.exit)
 
     def on_No(self):
         """Отказ от замены текста"""
-        self.window_hide(2)
+        self.stop_dialogue(2)
 
     def processing_clipboard(self):
         clipboard_text = f.get_selection()
-        # Если текст не скопировался из буфера обмена. Оставляем возможность вручную вставить его Ctrl_V
+
+        # Если текст не выделен. Оставляем возможность вручную вставить его с помощью Ctrl_V
         if not clipboard_text:
             self.is_restore_clipboard = False
 
         self.show_original_text(clipboard_text)  # Отображаем обрабатываемый текст
-        self.show_replacements_text(clipboard_text)  # Отображаем вариант замены теста
 
-    def paste_original_text(self):
-        logger.info(f"{C.LOGGER_TEXT_PASTE} {self.txtBrowSource.toPlainText()}")
+    def change_original_text(self):
+        logger.info(f"{C.LOGGER_TEXT_CHANGE} *'{self.txtBrowSource.toPlainText()}'*")
         self.show_replacements_text(self.txtBrowSource.toPlainText())
 
-    def window_show(self) -> None:
+    def start_dialogue(self) -> None:
         """
-        Показ окна диалога.
+        Начало диалога.
         :return: None
         """
         if not self.isHidden():  # Если диалог не закончен - новый не начинаем
             return
+
+        logger.info(f"{C.LOGGER_TEXT_START_DIALOGUE} - {f.get_title_window()}")
         self.old_clipboard_text = (
             f.get_clipboard()
         )  # запоминаем буфер обмена для возможного дальнейшего восстановления
         self.is_restore_clipboard = True
-        f.refocus_window()  # Целесообразность под вопросом. Разве, что узнать имя окна
-        # Поднимаем окно над всеми окнами
         self.processing_clipboard()  # Обрабатываем буфер обмена
-        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
+        self.setWindowFlag(
+            Qt.WindowType.WindowStaysOnTopHint, True
+        )  # Поднимаем окно над всеми окнами
         self.show()  # Выводим окно на экран
         # Делаем окно доступным для ввода с клавиатуры
         self.activateWindow()
 
-    def stop_dialogue(self):
-        """Останавливаем работу с диалогом"""
-
-        # Если буфер обмена не требуется для завершения действий Пользователя,
-        # то восстанавливаем первоначальный буфер обмена
-        if self.is_restore_clipboard:
-            f.put_clipboard(self.old_clipboard_text)  # восстанавливаем буфер обмена
-            logger.info(f"Восстановленный буфер обмена *'{self.old_clipboard_text}'*")
-        self.hide()  # Убираем окно с экрана
-
-    def window_hide(self, command: int) -> None:
-        """Выполняем команду, заданную в параметре и останавливаем работу с диалогом"""
+    def stop_dialogue(self, command: int) -> None:
+        """Выполняем команду, заданную в параметре"""
 
         # Обрабатываем параметр сигнала
         match command:
@@ -214,4 +205,12 @@ class Dialogue(QMainWindow):
             case _:  # Непредусмотренная команда
                 logger.critical(f"{C.TEXT_CRITICAL_ERROR_1} {self.command =}")
 
-        self.stop_dialogue()
+        # Если буфер обмена не требуется для завершения действий Пользователя,
+        # то восстанавливаем первоначальный буфер обмена
+        if self.is_restore_clipboard:
+            f.put_clipboard(self.old_clipboard_text)
+            logger.info(
+                f"{C.LOGGER_TEXT_RESTORED_CLIPBOARD} *'{self.old_clipboard_text}'*"
+            )
+        self.hide()  # Убираем окно с экрана
+        logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE} {f.get_title_window()}")

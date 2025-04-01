@@ -29,18 +29,17 @@ class Const:
     )
     LOGGER_FILE_NAME = "keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
-    LOGGER_TEXT_BEEN_READ = "В буфер обмена считан выделенный текст"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
     LOGGER_TEXT_LOAD_PROGRAM = "Программа загружена"
-    LOGGER_TEXT_NO_ACTIVATE_WINDOW = (
-        "refocus_window. Окно с выделенным текстом не активировалось."
-    )
-    LOGGER_TEXT_NO_BEEN_READ = (
+    LOGGER_TEXT_NO_READ = (
         "Неудачная попытка чтения выделенного текста. Время задержки ="
     )
-    LOGGER_TEXT_PASTE = "Пользователь вставил исходный текст -  "
+    LOGGER_TEXT_CHANGE = "Текст пользователя -  "
     LOGGER_TEXT_PRESS_CTRL = "Эмулировали нажатие ctrl"
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
+    LOGGER_TEXT_RESTORED_CLIPBOARD = "Восстановили буфер обмена"
+    LOGGER_TEXT_START_DIALOGUE = "Старт диалога. Заголовок окна"
+    LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога. Заголовок окна"
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"

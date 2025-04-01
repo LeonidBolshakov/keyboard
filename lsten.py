@@ -3,16 +3,14 @@
 from pynput.keyboard import Key, KeyCode, Listener
 
 from const import Const as C
-import signalsdialogue
+import signals
 
 
 class Listen:
     """Класс для прослушивания клавиатуры"""
 
     def __init__(self):
-        self.signals_dialogue = (
-            signalsdialogue.signals_dialogue
-        )  # Сигналы старт/стоп Dialogue
+        self.signals = signals.signals  # Сигналы старт/стоп Dialogue
 
     def on_release(self, key: Key | KeyCode) -> None:
         """
@@ -22,7 +20,7 @@ class Listen:
         """
         if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Генерация сигнала "Начало диалога"
-            self.signals_dialogue.start_dialogue.emit()
+            self.signals.start_dialogue.emit()
 
     def listen(self):
         """Прослушивание клавиатуры"""

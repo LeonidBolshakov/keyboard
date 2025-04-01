@@ -113,9 +113,8 @@ def get_selection() -> str:
     while n < C.MAX_CLIPBOARD_READS:
         text_from_clipboard = _get_selection(time_delay)
         if text_from_clipboard:
-            logger.info(f"{C.LOGGER_TEXT_BEEN_READ} *'{text_from_clipboard}'*")
             return text_from_clipboard
-        logger.info(f"{C.LOGGER_TEXT_NO_BEEN_READ} {time_delay}")
+        logger.info(f"{C.LOGGER_TEXT_NO_READ} {time_delay}")
         # Подготовка к следующей итерации
         time_delay += C.TIME_DELAY_CTRL_C
         n += 1
@@ -139,11 +138,10 @@ def _get_selection(time_delay: float) -> str | None:
     return text_from_clipboard if text_from_clipboard != empty_text else None
 
 
-def refocus_window() -> None:
+def get_title_window() -> str:
+    """
+    Возвращаем заголовок окна
+    :return: (str). Заголовок окна
+    """
     window = gw.getActiveWindow()
-    logger.info(f"Окно с выделенным текстом - {window.title}")
-    if window:
-        window.activate()
-        sleep(0.3)
-    else:
-        logger.warning(C.LOGGER_TEXT_NO_ACTIVATE_WINDOW)
+    return window.title
