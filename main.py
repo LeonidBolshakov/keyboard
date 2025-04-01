@@ -19,6 +19,9 @@ def setup_connections(_window) -> None:
 
     _signals = signals.signals
     _signals.start_dialogue.connect(_window.start_dialogue)
+    _signals.on_Yes.connect(_window.on_Yes)
+    _signals.on_No.connect(_window.on_No)
+    _signals.on_Cancel.connect(_window.on_Cancel)
 
 
 def start_keyboard_listening() -> None:

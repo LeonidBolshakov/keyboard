@@ -7,11 +7,13 @@ import logging
 logger = logging.getLogger()
 
 from PyQt6 import uic
+from PyQt6.QtGui import QKeyEvent, QCloseEvent
 from PyQt6.QtCore import Qt, QCoreApplication, QTimer
 from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton, QTextBrowser
 
 from const import Const as C
 import functions as f
+from customtextbrowser import CustomTextBrowser
 
 
 # noinspection PyUnresolvedReferences
@@ -19,8 +21,8 @@ class Dialogue(QMainWindow):
     """Класс организации диалога с пользователем"""
 
     # Переменные класса, определённые в Qt Designer
-    txtBrowSource: QTextBrowser
-    txtBrowReplace: QTextBrowser
+    txtBrowSource: CustomTextBrowser
+    txtBrowReplace: CustomTextBrowser
     buttonBox: QDialogButtonBox
     yes_button: QPushButton
     no_button: QPushButton
@@ -64,22 +66,19 @@ class Dialogue(QMainWindow):
         self.set_connect()  # Назначаем обработчики событий
         self.custom_UI()  # Делаем пользовательские настройки интерфейса
 
-    def keyPressEvent(self, event):
-        """Переопределение метода. Перехватываем ввод с клавиатуры"""
-        match event.key():
-            case Qt.Key.Key_1:  # Заменять текст
-                self.on_Yes()
-            case Qt.Key.Key_Escape:  # Отказ от замены
-                self.on_No()
-            case Qt.Key.Key_2:  # Отказ от замены
-                self.on_No()
-            case Qt.Key.Key_3:  # Выгрузить программу
-                self.on_Cancel()
-            case _:
-                # Для остальных клавиш передаём обработку системе
-                super().keyPressEvent(event)
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        """
+        Переопределение метода. Перехватываем ввод с клавиатуры.
+        Обрабатываем специальные клавиши
+        :param event: (QKeyEvent). Событие нажатия клавиши
+        :return: None
+        """
+        if not f.special_key(event):  # Обрабатываем специальные клавиши
+            super().keyPressEvent(
+                event
+            )  # Для остальных клавиш передаём обработку системе
 
-    def closeEvent(self, event):
+    def closeEvent(self, event: QCloseEvent) -> None:
         """Переопределение метода. Перехватываем закрытие окна Пользователем"""
         # При закрытии окна пользователем сигнализируем об остановке диалога, но программу из памяти не выгружаем
         self.stop_dialogue(1)

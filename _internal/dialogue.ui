@@ -91,7 +91,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QTextBrowser" name="txtBrowSource">
+       <widget class="CustomTextBrowser" name="txtBrowSource">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -246,7 +246,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QTextBrowser" name="txtBrowReplace">
+       <widget class="CustomTextBrowser" name="txtBrowReplace">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -417,6 +417,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>customtextbrowser</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>txtBrowSource</tabstop>
   <tabstop>txtBrowReplace</tabstop>

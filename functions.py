@@ -9,11 +9,13 @@ from pyautogui import hotkey
 import pygetwindow as gw
 import pyperclip
 from PyQt6.QtCore import QTimer
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QKeyEvent
 from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
+from PyQt6.QtCore import Qt
 
 from const import Const as C
 from replacetext import ReplaceText
+from signals import signals
 
 
 def press_ctrl(s: str, time_delay: int | float) -> None:
@@ -94,7 +96,7 @@ def get_clipboard() -> str:
         return ""
 
 
-def get_replacement_option(text: str) -> str:
+def get_replacement_variant(text: str) -> str:
     """
     Находим вариант замены текста
     :param text: (str). Исходный текст
@@ -105,13 +107,13 @@ def get_replacement_option(text: str) -> str:
 
 def get_selection() -> str:
     """
-    Возвращаем выделенный текст
+    Возвращаем выделенный текст. В случае неудачи делаем несколько попыток считывания
     :return: (str).
     """
     n = 0
     time_delay = 0
     while n < C.MAX_CLIPBOARD_READS:
-        text_from_clipboard = _get_selection(time_delay)
+        text_from_clipboard = get_it_once(time_delay)
         if text_from_clipboard:
             return text_from_clipboard
         logger.info(f"{C.LOGGER_TEXT_NO_READ} {time_delay}")
@@ -123,7 +125,7 @@ def get_selection() -> str:
     return ""
 
 
-def _get_selection(time_delay: float) -> str | None:
+def get_it_once(time_delay: float) -> str | None:
     """
     Считывает выделенный текст в буфер обмена.
     Если текст в буфер обмена не успел считаться, то возвращается C.EMPTY_TEXT
@@ -145,3 +147,19 @@ def get_title_window() -> str:
     """
     window = gw.getActiveWindow()
     return window.title
+
+
+def special_key(event: QKeyEvent) -> bool:
+    match event.key():
+        case Qt.Key.Key_1:  # Заменять текст
+            signals.on_Yes.emit()
+        case Qt.Key.Key_Escape:  # Отказ от замены
+            signals.on_No.emit()
+        case Qt.Key.Key_2:  # Отказ от замены
+            signals.on_No.emit()
+        case Qt.Key.Key_3:  # Выгрузить программу
+            signals.on_Cancel.emit()
+        case _:
+            return False
+
+    return True
