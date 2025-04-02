@@ -86,7 +86,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Выделенный текст</string>
+         <string>Исходный текс</string>
         </property>
        </widget>
       </item>
@@ -415,7 +415,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>

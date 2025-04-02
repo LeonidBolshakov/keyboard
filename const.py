@@ -27,7 +27,7 @@ class Const:
     TEXT_CRITICAL_ERROR_1 = (
         "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
     )
-    LOGGER_FILE_NAME = "keyboard.log"
+    LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
     LOGGER_TEXT_LOAD_PROGRAM = "Программа загружена"
