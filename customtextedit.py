@@ -1,10 +1,10 @@
-from PyQt6.QtWidgets import QTextBrowser
+from PyQt6.QtWidgets import QTextEdit
 from PyQt6.QtGui import QKeyEvent
 import functions as f
 
 
-class CustomTextBrowser(QTextBrowser):
-    """Расширение класса QTextBrowser для обработки нажатия специальных клавиш"""
+class CustomTextEdit(QTextEdit):
+    """Расширение класса QTextEdit для обработки нажатия специальных клавиш"""
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         """

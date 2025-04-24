@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton, QTextBro
 
 from const import Const as C
 import functions as f
-from customtextbrowser import CustomTextBrowser
+from customtextedit import CustomTextEdit
 
 
 # noinspection PyUnresolvedReferences
@@ -21,8 +21,8 @@ class Dialogue(QMainWindow):
     """Класс организации диалога с пользователем"""
 
     # Переменные класса, определённые в Qt Designer
-    txtBrowSource: CustomTextBrowser
-    txtBrowReplace: CustomTextBrowser
+    txtBrowSource: CustomTextEdit
+    txtBrowReplace: CustomTextEdit
     buttonBox: QDialogButtonBox
     yes_button: QPushButton
     no_button: QPushButton
