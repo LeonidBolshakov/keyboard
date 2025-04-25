@@ -9,24 +9,8 @@ class Const:
     COLOR_MESSAGE_RESTART_PROGRAM = QColor("red")
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"
-    EMPTY_TEXT = "f8cd7c4c-0334-4441-af88-8287e77c82e1"
     HASATTR_FROZEN = "frozen"
     KEY_BEGIN_DIALOGUE = Key.scroll_lock  # Клавиша вызова окна диалога
-    MAX_CLIPBOARD_READS = 4  # максимально число считываний буфера обмена
-    MIN_WIDTH_BUTTON = 170  # Минимальная ширина первых двух кнопок
-    PATH_DIALOGUE_UI = (
-        r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
-    )
-    QSS_BUTTON = "font-weight: bold; font-size: 12pt; "
-    QSS_NO = "color: darkblue;"
-    QSS_TEXT = "color: mediumblue;"  # Силь текстовых полей диалога
-    QSS_YES = "color: blue;"
-    QT_ENVIRON_KEY = "QT_LOGGING_RULES"
-    QT_ENVIRON_VALUE = "qt.qpa.window=false"
-    TEXT_CANCEL_BUTTON = "Выгрузить программу\nНажми 3"
-    TEXT_CRITICAL_ERROR_1 = (
-        "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
-    )
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
@@ -42,6 +26,21 @@ class Const:
     LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога. Заголовок окна"
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
+    MAX_CLIPBOARD_READS = 4  # максимально число считываний буфера обмена
+    MIN_WIDTH_BUTTON = 170  # Минимальная ширина первых двух кнопок
+    PATH_DIALOGUE_UI = (
+        r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
+    )
+    QSS_BUTTON = "font-weight: bold; font-size: 12pt; "
+    QSS_NO = "color: darkblue;"
+    QSS_TEXT = "color: mediumblue;"  # Силь текстовых полей диалога
+    QSS_YES = "color: blue;"
+    QT_ENVIRON_KEY = "QT_LOGGING_RULES"
+    QT_ENVIRON_VALUE = "qt.qpa.window=false"
+    TEXT_CANCEL_BUTTON = "Выгрузить программу\nНажми 3"
+    TEXT_CRITICAL_ERROR_1 = (
+        "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
+    )
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"

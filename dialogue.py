@@ -9,7 +9,7 @@ logger = logging.getLogger()
 from PyQt6 import uic
 from PyQt6.QtGui import QKeyEvent, QCloseEvent
 from PyQt6.QtCore import Qt, QCoreApplication, QTimer
-from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton, QTextBrowser
+from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton
 
 from const import Const as C
 import functions as f
@@ -21,8 +21,8 @@ class Dialogue(QMainWindow):
     """Класс организации диалога с пользователем"""
 
     # Переменные класса, определённые в Qt Designer
-    txtBrowSource: CustomTextEdit
-    txtBrowReplace: CustomTextEdit
+    txtEditSource: CustomTextEdit
+    txtEditReplace: CustomTextEdit
     buttonBox: QDialogButtonBox
     yes_button: QPushButton
     no_button: QPushButton
@@ -109,7 +109,7 @@ class Dialogue(QMainWindow):
         self.no_button.clicked.connect(self.on_No)
         self.cancel_button.clicked.connect(self.on_Cancel)
 
-        self.txtBrowSource.textChanged.connect(self.change_original_text)
+        self.txtEditSource.textChanged.connect(self.change_original_text)
 
     def custom_UI(self):
         """Пользовательская настройка интерфейса"""
@@ -120,8 +120,8 @@ class Dialogue(QMainWindow):
         f.making_button_settings(self.cancel_button, C.TEXT_CANCEL_BUTTON)
 
         # Устанавливаем стили текстовых полей
-        self.txtBrowReplace.setStyleSheet(C.QSS_TEXT)
-        self.txtBrowSource.setStyleSheet(C.QSS_TEXT)
+        self.txtEditReplace.setStyleSheet(C.QSS_TEXT)
+        self.txtEditSource.setStyleSheet(C.QSS_TEXT)
 
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
@@ -132,17 +132,17 @@ class Dialogue(QMainWindow):
         :param original_text: (str)/ текст пользователя
         :return:
         """
-        self.txtBrowSource.setText(original_text)
+        self.txtEditSource.setText(original_text)
 
     def show_replacements_text(self, replacement_option_text: str) -> None:
         """Отображаем вариант замены текста."""
-        self.txtBrowReplace.setText(
+        self.txtEditReplace.setText(
             f.ReplaceText().swap_keyboard_layout(replacement_option_text)
         )
 
     def on_Yes(self):
         """Заменяем выделенный текст предложенным вариантом замены"""
-        f.put_clipboard(self.txtBrowReplace.toPlainText())
+        f.put_clipboard(self.txtEditReplace.toPlainText())
         self.hide()  # Освобождаем фокус для окна с выделенным текстом
         self.stop_dialogue(1)
 
@@ -166,8 +166,8 @@ class Dialogue(QMainWindow):
         self.show_original_text(clipboard_text)  # Отображаем обрабатываемый текст
 
     def change_original_text(self):
-        logger.info(f"{C.LOGGER_TEXT_CHANGE} *'{self.txtBrowSource.toPlainText()}'*")
-        self.show_replacements_text(self.txtBrowSource.toPlainText())
+        logger.info(f"{C.LOGGER_TEXT_CHANGE} *'{self.txtEditSource.toPlainText()}'*")
+        self.show_replacements_text(self.txtEditSource.toPlainText())
 
     def start_dialogue(self) -> None:
         """

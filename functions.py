@@ -3,6 +3,8 @@
 from time import sleep
 import logging
 
+import pyautogui
+
 logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
@@ -83,17 +85,13 @@ def show_message(
 
 def replace_selected_text():
     """Заменяем выделенный текст"""
-    text_from_clipboard = get_clipboard()
     press_ctrl("v", C.TIME_DELAY_CTRL_V)  # Эмуляция Ctrl+v
-    logger.info(f"{C.LOGGER_TEXT_WRITE} *'{text_from_clipboard}'*")
+    logger.info(f"{C.LOGGER_TEXT_WRITE} *'{get_clipboard()}'*")
 
 
 def get_clipboard() -> str:
     """Возвращаем текст буфера обмена"""
-    if QApplication.clipboard():
-        return QApplication.clipboard().text()
-    else:
-        return ""
+    return pyperclip.paste()
 
 
 def get_replacement_variant(text: str) -> str:
@@ -110,16 +108,14 @@ def get_selection() -> str:
     Возвращаем выделенный текст. В случае неудачи делаем несколько попыток считывания
     :return: (str).
     """
-    n = 0
     time_delay = 0
-    while n < C.MAX_CLIPBOARD_READS:
+    for _ in range(C.MAX_CLIPBOARD_READS):
         text_from_clipboard = get_it_once(time_delay)
         if text_from_clipboard:
             return text_from_clipboard
         logger.info(f"{C.LOGGER_TEXT_NO_READ} {time_delay}")
         # Подготовка к следующей итерации
         time_delay += C.TIME_DELAY_CTRL_C
-        n += 1
 
     logger.info(f"{C.LOGGER_TEXT_ERROR_READ}")
     return ""
@@ -132,12 +128,10 @@ def get_it_once(time_delay: float) -> str | None:
     :param time_delay: (float) - время задержки проверки после нажатия клавиш Ctrl+C
     :return: (str) Текст, считанный из
     """
-    empty_text = C.EMPTY_TEXT
-    put_clipboard(empty_text)
-    press_ctrl("c", time_delay)
-    text_from_clipboard = get_clipboard()
 
-    return text_from_clipboard if text_from_clipboard != empty_text else None
+    pyperclip.copy("")
+    press_ctrl("c", time_delay)
+    return get_clipboard()
 
 
 def get_title_window() -> str:
