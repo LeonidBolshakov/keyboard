@@ -14,6 +14,10 @@ from const import Const as C
 import signals
 
 
+def setup_margins():
+    window.setContentsMargins(20, 20, 20, 20)
+
+
 def setup_connections(_window) -> None:
     """Связываем сигнал с функцией обработки"""
 
@@ -57,6 +61,7 @@ if __name__ == "__main__":
     # Создаем приложение и главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
     window = Dialogue(is_restart_program)
+    setup_margins()
     setup_connections(window)
 
     # Запускаем прослушивание клавиатуры
