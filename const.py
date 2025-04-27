@@ -23,7 +23,7 @@ class Const:
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
     LOGGER_TEXT_RESTORED_CLIPBOARD = "Восстановили буфер обмена"
     LOGGER_TEXT_START_DIALOGUE = "Старт диалога. Заголовок окна"
-    LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога. Заголовок окна"
+    LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога."
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
     MAX_CLIPBOARD_READS = 2  # максимально число считываний буфера обмена
