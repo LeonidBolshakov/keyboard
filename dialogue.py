@@ -219,4 +219,4 @@ class Dialogue(QMainWindow):
                 f"{C.LOGGER_TEXT_RESTORED_CLIPBOARD} *'{self.old_clipboard_text}'*"
             )
         self.hide()  # Убираем окно с экрана
-        logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE} {f.get_window()}")
+        logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE}")
