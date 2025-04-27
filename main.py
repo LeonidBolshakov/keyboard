@@ -57,15 +57,14 @@ if __name__ == "__main__":
         shared_memory.create(1)
         init_logging()
         is_restart_program = False
+        # Запускаем прослушивание клавиатуры
+        start_keyboard_listening()
 
     # Создаем приложение и главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
     window = Dialogue(is_restart_program)
-    setup_margins()
+    setup_margins() # Установка границ окна
     setup_connections(window)
-
-    # Запускаем прослушивание клавиатуры
-    start_keyboard_listening()
 
     # Запускаем приложение
     exit(app.exec())
