@@ -26,7 +26,7 @@ class Const:
     LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога. Заголовок окна"
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
-    MAX_CLIPBOARD_READS = 4  # максимально число считываний буфера обмена
+    MAX_CLIPBOARD_READS = 2  # максимально число считываний буфера обмена
     MIN_WIDTH_BUTTON = 170  # Минимальная ширина первых двух кнопок
     PATH_DIALOGUE_UI = (
         r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
@@ -46,9 +46,10 @@ class Const:
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"
     )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
+    TEXT_WINDOW_NOT_FOUND = "Окно не найдено"
     TEXT_YES_BUTTON = "Заменить\nНажми 1"
-    TIME_DELAY_CTRL_C = 0.1  # Задержка, в секундах, после нажатия Ctrl+c
-    TIME_DELAY_CTRL_V = 0.4  # Задержка, в секундах, после нажатия Ctrl+v
+    TIME_DELAY_CTRL_C = 0.3  # Задержка, в секундах, после нажатия Ctrl+c
+    TIME_DELAY_CTRL_V = 0.3  # Задержка, в секундах, после нажатия Ctrl+v
     TIME_MESSAGE_RESTART_PROGRAM = (
         2  # Время, в секундах, высвечивания сообщения о повторном запуске программы
     )

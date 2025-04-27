@@ -3,8 +3,6 @@
 from time import sleep
 import logging
 
-import pyautogui
-
 logger = logging.getLogger(__name__)
 
 from pyautogui import hotkey
@@ -12,7 +10,7 @@ import pygetwindow as gw
 import pyperclip
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor, QKeyEvent
-from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
+from PyQt6.QtWidgets import QMessageBox, QPushButton
 from PyQt6.QtCore import Qt
 
 from const import Const as C
@@ -134,13 +132,13 @@ def get_it_once(time_delay: float) -> str | None:
     return get_clipboard()
 
 
-def get_title_window() -> str:
+# noinspection PyProtectedMember
+def get_window() -> gw._pygetwindow_win.Win32Window | None:
     """
-    Возвращаем заголовок окна
+    Возвращаем окно
     :return: (str). Заголовок окна
     """
-    window = gw.getActiveWindow()
-    return window.title
+    return gw.getActiveWindow()
 
 
 def special_key(event: QKeyEvent) -> bool:

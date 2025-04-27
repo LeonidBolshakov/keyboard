@@ -177,7 +177,14 @@ class Dialogue(QMainWindow):
         if not self.isHidden():  # Если диалог не закончен - новый не начинаем
             return
 
-        logger.info(f"{C.LOGGER_TEXT_START_DIALOGUE} - {f.get_title_window()}")
+        window = f.get_window()  # Получаем окно операционной системы
+        if window:
+            window.activate()  # Активируем окно
+            title = window.title
+        else:
+            title = C.TEXT_WINDOW_NOT_FOUND
+
+        logger.info(f"{C.LOGGER_TEXT_START_DIALOGUE} - {title}")
         self.old_clipboard_text = (
             f.get_clipboard()
         )  # запоминаем буфер обмена для возможного дальнейшего восстановления
@@ -212,4 +219,4 @@ class Dialogue(QMainWindow):
                 f"{C.LOGGER_TEXT_RESTORED_CLIPBOARD} *'{self.old_clipboard_text}'*"
             )
         self.hide()  # Убираем окно с экрана
-        logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE} {f.get_title_window()}")
+        logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE} {f.get_window()}")
