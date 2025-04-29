@@ -45,8 +45,11 @@ class Const:
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"
     )
+    TEXT_NO_ADMIN = (
+        "Программа запущена НЕ с правами администратора\nВозможна неустойчивая работа"
+    )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
-    TEXT_WINDOW_NOT_FOUND = "Окно не найдено"
+    TEXT_WINDOW_NOT_FOUND = "-> Окно не найдено <-"
     TEXT_YES_BUTTON = "Заменить\nНажми 1"
     TIME_DELAY_CTRL_C = 0.3  # Задержка, в секундах, после нажатия Ctrl+c
     TIME_DELAY_CTRL_V = 0.3  # Задержка, в секундах, после нажатия Ctrl+v
@@ -56,4 +59,5 @@ class Const:
     TIME_MESSAGE_START_PROGRAM = (
         0.3  # Время высвечивания сообщения о запуске программы (в секундах)
     )
+    TITLE_WARNING = "Предупреждение"
     UUID_PROGRAM = "8A63F9A8-A206-4B0A-B517-F28E3471154E"

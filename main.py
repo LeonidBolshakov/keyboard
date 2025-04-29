@@ -4,14 +4,25 @@ from sys import exit
 from os import environ
 import threading
 import logging
+import os
 
 from lsten import Listen
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtCore import QSharedMemory
 
 from dialogue import Dialogue
 from const import Const as C
 import signals
+
+
+def is_admin():
+    try:
+        os.listdir(r"C:\Windows\Temp")  # Любое действие, требующее прав
+        return True
+    except PermissionError:
+        return False
+    except Exception:
+        return True
 
 
 def setup_margins():
@@ -62,8 +73,13 @@ if __name__ == "__main__":
 
     # Создаем приложение и главное окно диалога. Окно не высвечиваем.
     app = QApplication([])
+    # Проверка запуска программы от имени администратора
+    if not is_admin():
+        QMessageBox.warning(
+            None, C.TITLE_WARNING, C.TEXT_NO_ADMIN, QMessageBox.StandardButton.Ok
+        )
     window = Dialogue(is_restart_program)
-    setup_margins() # Установка границ окна
+    setup_margins()  # Установка границ окна
     setup_connections(window)
 
     # Запускаем приложение

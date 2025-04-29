@@ -156,7 +156,7 @@ class Dialogue(QMainWindow):
         """Отказ от замены текста"""
         self.stop_dialogue(2)
 
-    def processing_clipboard(self):
+    def fill_clipboard(self):
         clipboard_text = f.get_selection()
 
         # Если текст не выделен. Оставляем возможность вручную вставить его с помощью Ctrl_V
@@ -189,7 +189,7 @@ class Dialogue(QMainWindow):
             f.get_clipboard()
         )  # запоминаем буфер обмена для возможного дальнейшего восстановления
         self.is_restore_clipboard = True
-        self.processing_clipboard()  # Обрабатываем буфер обмена
+        self.fill_clipboard()  # Обрабатываем буфер обмена
         self.setWindowFlag(
             Qt.WindowType.WindowStaysOnTopHint, True
         )  # Поднимаем окно над всеми окнами
