@@ -1,7 +1,6 @@
 """Главный модуль программы"""
 
 from sys import exit
-from os import environ
 import threading
 import logging
 import os
@@ -21,8 +20,6 @@ def is_admin():
         return True
     except PermissionError:
         return False
-    except Exception:
-        return True
 
 
 def setup_margins():
@@ -57,7 +54,7 @@ def init_logging():
 
 if __name__ == "__main__":
     # Блокируем вывод сообщений о GPA
-    environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
+    os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
 
     # Проверка повторного запуска программы.
     shared_memory = QSharedMemory(C.UUID_PROGRAM)

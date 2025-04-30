@@ -25,8 +25,11 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время задержки до и после нажатия клавиши
     :return: None
     """
-    sleep(float(time_delay))
-    hotkey(C.CTRL, s)
+    try:
+        hotkey(C.CTRL, s)
+        sleep(float(time_delay))
+    except Exception as e:
+        logger.info(f"Ctrl+C {e}")
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
     # Ждём завершения команда Ctrl + {s}
