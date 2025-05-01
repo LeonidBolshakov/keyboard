@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
-    <height>212</height>
+    <width>425</width>
+    <height>167</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Замена выделенного текста</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -25,10 +25,16 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>256</width>
-          <height>17</height>
+          <height>50</height>
          </size>
         </property>
         <property name="palette">
@@ -74,14 +80,17 @@
          </font>
         </property>
         <property name="text">
-         <string>Выделенный текст</string>
+         <string>Исходный текс</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QTextBrowser" name="txtBrowSource">
+       <widget class="CustomTextEdit" name="txtEditSource">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -89,67 +98,40 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>52</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>1000000</width>
-          <height>22</height>
+          <width>16777215</width>
+          <height>50</height>
          </size>
         </property>
         <property name="palette">
          <palette>
           <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>0</red>
               <green>0</green>
-              <blue>255</blue>
+              <blue>127</blue>
              </color>
             </brush>
            </colorrole>
           </active>
           <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>0</red>
               <green>0</green>
-              <blue>255</blue>
+              <blue>127</blue>
              </color>
             </brush>
            </colorrole>
           </inactive>
           <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>120</red>
-              <green>120</green>
-              <blue>120</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
@@ -167,6 +149,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextEditable|Qt::TextEditorInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
@@ -177,10 +162,16 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>256</width>
-          <height>17</height>
+          <height>50</height>
          </size>
         </property>
         <property name="palette">
@@ -231,9 +222,12 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QTextBrowser" name="txtBrowReplace">
+       <widget class="QTextEdit" name="txtEditReplace">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -241,67 +235,40 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>52</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>1000000</width>
-          <height>22</height>
+          <width>16777215</width>
+          <height>50</height>
          </size>
         </property>
         <property name="palette">
          <palette>
           <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>0</red>
               <green>0</green>
-              <blue>255</blue>
+              <blue>127</blue>
              </color>
             </brush>
            </colorrole>
           </active>
           <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>0</red>
-              <green>0</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
               <red>0</red>
               <green>0</green>
-              <blue>255</blue>
+              <blue>127</blue>
              </color>
             </brush>
            </colorrole>
           </inactive>
           <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>120</red>
-              <green>120</green>
-              <blue>120</blue>
-             </color>
-            </brush>
-           </colorrole>
            <colorrole role="Text">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
@@ -319,6 +286,9 @@
           <pointsize>12</pointsize>
          </font>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextEditable|Qt::TextEditorInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+        </property>
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
@@ -326,13 +296,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>50</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>16777215</height>
+          <height>50</height>
          </size>
         </property>
         <property name="palette">
@@ -397,12 +367,14 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <tabstops>
-  <tabstop>txtBrowSource</tabstop>
-  <tabstop>txtBrowReplace</tabstop>
- </tabstops>
+ <customwidgets>
+  <customwidget>
+   <class>CustomTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>customtextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

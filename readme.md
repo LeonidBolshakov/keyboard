@@ -1,5 +1,6 @@
-Программа меняет регистр клавиш в уже введённом тексте.
-Для замены регистра надо выделить изменяемый текст и нажать горячую клавишу (scr_lk).
-После этого программы выведет диалог, в которм можно посмотреть вариаты замен
-и по Вашему желанию программа заменит выделенный текст.
-Язык программирования - Питон.
+The program changes the case of keys in the selected text.
+To change the case, select the text anywhere on the screen
+and press the hotkey (scr_lk).
+After that, you need to review the proposed replacement option in the dialog box
+and decide whether to use it or not.
+Programming language - Python.
