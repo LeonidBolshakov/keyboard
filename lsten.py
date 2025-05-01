@@ -22,6 +22,8 @@ class Listen:
         :param key: (Key | KeyCode) - отпущенная клавиша
         :return: None
         """
+        if signals.signals.debug:
+            logger.info(f'   ->{key}')
         if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Генерация сигнала "Начало диалога"
             self.signals.start_dialogue.emit()

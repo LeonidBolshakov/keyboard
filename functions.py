@@ -11,7 +11,7 @@ from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor, QKeyEvent
 from PyQt6.QtWidgets import QMessageBox, QPushButton
 from PyQt6.QtCore import Qt
-from pynput.keyboard import Controller, Key
+from pynput.keyboard import Controller, Key, KeyCode
 
 keyboard = Controller()
 
@@ -27,14 +27,14 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время задержки после нажатия клавиши
     :return: None
     """
+    signals.debug = True
     try:
-        with keyboard.pressed(Key.ctrl):  # Удерживаем Ctrl
+        with keyboard.pressed(Key.ctrl):  #  Ctrl
+            keyboard.type(s)
             sleep(time_delay)
-            keyboard.press(s)  # Нажимаем s
-            sleep(time_delay)
-            keyboard.release(s)  # Отпускаем s
     except Exception as e:
         logger.info(f"Ctrl+C {e}")
+    signals.debug = False
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
 
