@@ -31,12 +31,18 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     signals.debug = False
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
+
 def hotkey(*keys):
     kbd = Controller()
+    # Принудительно отпускаем Ctrl/Alt/Shift (на случай предыдущих ошибок)
+    for mod_key in [Key.ctrl, Key.alt, Key.shift]:
+        kbd.release(mod_key)
     for key in keys:
         kbd.press(key)
+    sleep(0.05)
     for key in reversed(keys):
         kbd.release(key)
+    sleep(0.05)
 
 def put_clipboard(text: str) -> None:
     """Записываем текст в буфер обмена"""
