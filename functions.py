@@ -11,7 +11,7 @@ from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor, QKeyEvent
 from PyQt6.QtWidgets import QMessageBox, QPushButton
 from PyQt6.QtCore import Qt
-from pynput.keyboard import Controller, Key, KeyCode
+from pynput.keyboard import Controller, Key
 
 keyboard = Controller()
 
@@ -28,12 +28,10 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :return: None
     """
     signals.debug = True
-    try:
-        with keyboard.pressed(Key.ctrl):  #  Ctrl
-            keyboard.type(s)
-            sleep(time_delay)
-    except Exception as e:
-        logger.info(f"Ctrl+C {e}")
+    keyboard.press(Key.ctrl)
+    sleep(time_delay)
+    keyboard.tap(s)
+    keyboard.release(Key.ctrl)
     signals.debug = False
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
