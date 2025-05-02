@@ -13,8 +13,6 @@ from PyQt6.QtWidgets import QMessageBox, QPushButton
 from PyQt6.QtCore import Qt
 from pynput.keyboard import Controller, Key
 
-keyboard = Controller()
-
 from const import Const as C
 from replacetext import ReplaceText
 from signals import signals
@@ -28,13 +26,17 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :return: None
     """
     signals.debug = True
-    keyboard.press(Key.ctrl)
+    hotkey(Key.ctrl, s)
     sleep(time_delay)
-    keyboard.tap(s)
-    keyboard.release(Key.ctrl)
     signals.debug = False
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
+def hotkey(*keys):
+    kbd = Controller()
+    for key in keys:
+        kbd.press(key)
+    for key in reversed(keys):
+        kbd.release(key)
 
 def put_clipboard(text: str) -> None:
     """Записываем текст в буфер обмена"""
