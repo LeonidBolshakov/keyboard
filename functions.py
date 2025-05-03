@@ -11,7 +11,7 @@ from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor, QKeyEvent
 from PyQt6.QtWidgets import QMessageBox, QPushButton
 from PyQt6.QtCore import Qt
-from pynput.keyboard import Controller, Key
+import keyboard
 
 from const import Const as C
 from replacetext import ReplaceText
@@ -22,28 +22,16 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     """
     Эмулировать нажатие клавиш Ctrl+символ.
     :param s: (str). Символ, нажимаемый вместе с Ctrl
-    :param time_delay: (int | float). Время задержки после нажатия клавиши
+    :param time_delay: (int | float). Время после нажатия клавиши
     :return: None
     """
-    signals.debug = True
-    hotkey(Key.ctrl_l, s)
+    press_key(s)
     sleep(time_delay)
-    signals.debug = False
     logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
 
 
-def hotkey(*keys):
-    kbd = Controller()
-    # Принудительно отпускаем Ctrl/Alt/Shift (на случай предыдущих ошибок)
-    for mod_key in [Key.ctrl, Key.alt, Key.shift]:
-        kbd.release(mod_key)
-    sleep(0.05)
-    for key in keys:
-        kbd.press(key)
-    sleep(0.05)
-    for key in reversed(keys):
-        kbd.release(key)
-    sleep(0.05)
+def press_key(s: str):
+    keyboard.send(f"{C.CTRL}+{s}")
 
 
 def put_clipboard(text: str) -> None:

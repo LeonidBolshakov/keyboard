@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from pynput.keyboard import Key, KeyCode, Listener
+import keyboard
 
 from const import Const as C
 import signals
@@ -16,19 +16,17 @@ class Listen:
     def __init__(self):
         self.signals = signals.signals  # Сигналы старт/стоп Dialogue
 
-    def on_release(self, key: Key | KeyCode) -> None:
+    def on_press(self, event: keyboard._keyboard_event.KeyboardEvent) -> None:
         """
-        Обработка отпуская клавиши
-        :param key: (Key | KeyCode) - отпущенная клавиша
+        Обработка нажатия клавиши
+        :param event - событие
         :return: None
         """
-        if signals.signals.debug:
-            logger.info(f'   ->{key}')
-        if key == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
+        if event.name == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Генерация сигнала "Начало диалога"
             self.signals.start_dialogue.emit()
 
     def listen(self):
         """Прослушивание клавиатуры"""
-        with Listener(on_press=None, on_release=self.on_release) as listener:
-            listener.join()
+        keyboard.hook(self.on_press)
+        keyboard.wait()

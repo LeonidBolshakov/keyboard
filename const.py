@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from pynput.keyboard import Key
 from PyQt6.QtGui import QColor
 
 
@@ -10,7 +9,7 @@ class Const:
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"
     HASATTR_FROZEN = "frozen"
-    KEY_BEGIN_DIALOGUE = Key.scroll_lock  # Клавиша вызова окна диалога
+    KEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна диалога
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"

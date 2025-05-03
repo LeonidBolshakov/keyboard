@@ -192,7 +192,7 @@ class Dialogue(QMainWindow):
         self.fill_clipboard()  # Обрабатываем буфер обмена
         self.setWindowFlag(
             Qt.WindowType.WindowStaysOnTopHint, True
-        )  # Поднимаем окно над всеми окнами
+        )  # Поднимаем окно диалога над всеми окнами
         self.show()  # Выводим окно на экран
         # Делаем окно доступным для ввода с клавиатуры
         self.activateWindow()
