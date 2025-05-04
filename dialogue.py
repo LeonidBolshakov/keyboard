@@ -81,7 +81,7 @@ class Dialogue(QMainWindow):
     def closeEvent(self, event: QCloseEvent) -> None:
         """Переопределение метода. Перехватываем закрытие окна Пользователем"""
         # При закрытии окна пользователем сигнализируем об остановке диалога, но программу из памяти не выгружаем
-        self.stop_dialogue(1)
+        self.stop_dialogue(2)
         event.ignore()
 
     def init_UI(self) -> None:

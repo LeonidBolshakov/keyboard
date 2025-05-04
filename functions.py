@@ -61,7 +61,7 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
 
 def show_message(
-        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.

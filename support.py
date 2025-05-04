@@ -10,7 +10,6 @@ import sys
 
 def on_press(event: keyboard._keyboard_event.KeyboardEvent) -> None:
     print(f"{event.name=} {event.scan_code=}")
-    зкште
     if event.name == "Esc":
         sys.exit()
 
