@@ -18,7 +18,6 @@ class Const:
         "Неудачная попытка чтения выделенного текста. Время задержки ="
     )
     LOGGER_TEXT_CHANGE = "Текст пользователя -  "
-    LOGGER_TEXT_PRESS_CTRL = "Эмулировали нажатие ctrl"
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
     LOGGER_TEXT_RESTORED_CLIPBOARD = "Восстановили буфер обмена"
     LOGGER_TEXT_START_DIALOGUE = "Старт диалога. Заголовок окна"

@@ -10,6 +10,7 @@ class Signals(QObject):
     on_Yes = pyqtSignal()
     on_No = pyqtSignal()
     on_Cancel = pyqtSignal()
+    debug = False
 
 
 # Объект сигналов запуска и останова Dialogue

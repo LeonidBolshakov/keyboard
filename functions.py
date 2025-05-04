@@ -25,12 +25,16 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время после нажатия клавиши
     :return: None
     """
+    signals.debug = True
+
     press_key(s)
     sleep(time_delay)
-    logger.info(f"{C.LOGGER_TEXT_PRESS_CTRL}+{s}")
+    signals.debug = False
 
 
 def press_key(s: str):
+    logger.info(f"   ->{C.CTRL}+{s}")
+    keyboard.send(C.CTRL, do_press=False)
     keyboard.send(f"{C.CTRL}+{s}")
 
 
@@ -52,12 +56,12 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
         button.setStyleSheet(qss + C.QSS_BUTTON)
     button.setText(text)
 
-    # Определяем, что если на кнопке установлен фокус, то при нажатии Enter она считается нажатой.
+    # Определяем, что если на кнопке установлен фокус, то при нажатии Enter она нажимается.
     button.setAutoDefault(True)
 
 
 def show_message(
-    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.
