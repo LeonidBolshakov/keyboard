@@ -12,6 +12,7 @@ from PyQt6.QtCore import QSharedMemory
 from dialogue import Dialogue
 from const import Const as C
 import signals
+import functions as f
 
 
 def is_admin():
@@ -22,11 +23,11 @@ def is_admin():
         return False
 
 
-def setup_margins():
-    window.setContentsMargins(20, 20, 20, 20)
+def setup_margins(_window: Dialogue) -> None:
+    _window.setContentsMargins(*C.MARGIN_MAIN_WINDOW)
 
 
-def setup_connections(_window) -> None:
+def setup_connections(_window: Dialogue) -> None:
     """Связываем сигнал с функцией обработки"""
 
     _signals = signals.signals
@@ -52,7 +53,7 @@ def init_logging():
     )
 
 
-if __name__ == "__main__":
+def main():
     # Блокируем вывод сообщений о GPA
     os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
 
@@ -65,19 +66,30 @@ if __name__ == "__main__":
         shared_memory.create(1)
         init_logging()
         is_restart_program = False
+
         # Запускаем прослушивание клавиатуры
         start_keyboard_listening()
 
-    # Создаем приложение и главное окно диалога. Окно не высвечиваем.
+    # Создаем приложение.
     app = QApplication([])
+
     # Проверка запуска программы от имени администратора
     if not is_admin():
         QMessageBox.warning(
             None, C.TITLE_WARNING, C.TEXT_NO_ADMIN, QMessageBox.StandardButton.Ok
         )
+    # Проверка английского регистра клавиатуры
+    if f.get_current_layout() != C.LAYOUT_EN_US:
+        QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
+
+    # Создаём главное окно диалога. Окно не высвечиваем.
     window = Dialogue(is_restart_program)
-    setup_margins()  # Установка границ окна
+    setup_margins(window)  # Установка границ окна
     setup_connections(window)
 
     # Запускаем приложение
     exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

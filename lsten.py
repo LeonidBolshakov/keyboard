@@ -8,6 +8,7 @@ import keyboard
 
 from const import Const as C
 import signals
+import functions as f
 
 
 class Listen:
@@ -32,4 +33,6 @@ class Listen:
     def listen(self):
         """Прослушивание клавиатуры"""
         keyboard.on_press(self.on_press)
+        # f.set_layout(signals.Signals.current_layout)
+        # print(f.get_current_layout())
         keyboard.wait()

@@ -1,6 +1,7 @@
 """Функции, не привязанные к классам"""
 
 from time import sleep
+import ctypes
 import logging
 
 logger = logging.getLogger(__name__)
@@ -33,9 +34,25 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
 
 
 def press_key(s: str):
-    logger.info(f"   ->{C.CTRL}+{s}")
-    keyboard.send(C.CTRL, do_press=False)
-    keyboard.send(f"{C.CTRL}+{s}")
+    symbol = f"{C.CTRL}+{s}"
+    keyboard.send(symbol)
+    logger.info(f"   ->{symbol}")
+
+
+def get_current_layout():
+    """Получаем текущий layout_id"""
+    hkl = ctypes.windll.user32.GetKeyboardLayout(0)
+    return hkl & 0xFFFF
+
+
+def set_layout(layout_id):
+    """Устанавливаем раскладку по layout_id"""
+    ctypes.windll.user32.PostMessageW(
+        C.PM_HWND_BROADCAST,
+        C.PM_WM_INPUTLANGCHANGEREQUEST,
+        C.PM_FLAG_CHANGE,
+        layout_id,
+    )
 
 
 def put_clipboard(text: str) -> None:
@@ -145,7 +162,7 @@ def get_window() -> gw._pygetwindow_win.Win32Window | None:
     return gw.getActiveWindow()
 
 
-def special_key(event: QKeyEvent) -> bool:
+def run_special_key(event: QKeyEvent) -> bool:
     match event.key():
         case Qt.Key.Key_1:  # Заменять текст
             signals.on_Yes.emit()

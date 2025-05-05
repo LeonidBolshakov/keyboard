@@ -13,7 +13,7 @@ class CustomTextEdit(QTextEdit):
         :param event: (QKeyEvent). Событие нажатия клавиши
         :return: None
         """
-        if not f.special_key(event):  # Обрабатываем специальные клавиши
+        if not f.run_special_key(event):  # Обрабатываем специальные клавиши
             super().keyPressEvent(
                 event
             )  # Для остальных клавиш передаём обработку системе

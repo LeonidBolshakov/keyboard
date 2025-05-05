@@ -10,6 +10,8 @@ class Const:
     CTRL = "ctrl"
     HASATTR_FROZEN = "frozen"
     KEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна диалога
+    LAYOUT_EN_US = 0x409
+    LAYOUT_RU_RU = 0x419
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
@@ -24,11 +26,18 @@ class Const:
     LOGGER_TEXT_STOP_DIALOGUE = "Остановка диалога."
     LOGGER_TEXT_UNLOAD_PROGRAM = "Программа выгружена"
     LOGGER_TEXT_WRITE = "Из буфера обмена отправлен текст"
+    MARGIN_MAIN_WINDOW = (20, 20, 20, 20)
     MAX_CLIPBOARD_READS = 2  # максимально число считываний буфера обмена
     MIN_WIDTH_BUTTON = 170  # Минимальная ширина первых двух кнопок
     PATH_DIALOGUE_UI = (
         r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
     )
+    PM_HWND_BROADCAST = 0xFFFF  # дескриптор окна (0xFFFF для отправки всем окнам)
+    PM_WM_INPUTLANGCHANGEREQUEST = (
+        0x50  # Код сообщения. Запрос на смену раскладки клавиатуры
+    )
+    PM_FLAG_CHANGE = 0  # Запрос на изменение
+
     QSS_BUTTON = "font-weight: bold; font-size: 12pt; "
     QSS_NO = "color: darkblue;"
     QSS_TEXT = "color: mediumblue;"  # Силь текстовых полей диалога
@@ -45,6 +54,9 @@ class Const:
     )
     TEXT_NO_ADMIN = (
         "Программа запущена НЕ с правами администратора\nВозможна неустойчивая работа"
+    )
+    TEXT_NO_ENG_LAYOUT = (
+        "Раскладка клавиатуры НЕ английская\nПрограмма будет работать с ограничениями"
     )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
     TEXT_WINDOW_NOT_FOUND = "-> Окно не найдено <-"
