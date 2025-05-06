@@ -43,16 +43,6 @@ def start_keyboard_listening() -> None:
     listener_thread = threading.Thread(target=listen.listen, daemon=True)
     listener_thread.start()
 
-
-def init_logging():
-    """Стартуем систему логирования"""
-    logging.basicConfig(
-        level=logging.INFO,
-        filename=C.LOGGER_FILE_NAME,
-        format=C.LOGGER_FORMAT,
-    )
-
-
 def main():
     # Блокируем вывод сообщений о GPA
     os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
@@ -64,7 +54,7 @@ def main():
         is_restart_program = True
     else:
         shared_memory.create(1)
-        init_logging()
+        f.init_logging()
         is_restart_program = False
 
         # Запускаем прослушивание клавиатуры

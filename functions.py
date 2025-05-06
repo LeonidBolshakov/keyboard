@@ -45,7 +45,7 @@ def get_current_layout():
     return hkl & 0xFFFF
 
 
-def set_layout(layout_id):
+def set_layout(layout_id: int):
     """Устанавливаем раскладку по layout_id"""
     ctypes.windll.user32.PostMessageW(
         C.PM_HWND_BROADCAST,
@@ -163,6 +163,7 @@ def get_window() -> gw._pygetwindow_win.Win32Window | None:
 
 
 def run_special_key(event: QKeyEvent) -> bool:
+    """Обрабатываем нажатие горячих клавиш кнопок"""
     match event.key():
         case Qt.Key.Key_1:  # Заменять текст
             signals.on_Yes.emit()
@@ -176,3 +177,12 @@ def run_special_key(event: QKeyEvent) -> bool:
             return False
 
     return True
+
+
+def init_logging():
+    """Стартуем систему логирования"""
+    logging.basicConfig(
+        level=logging.INFO,
+        filename=C.LOGGER_FILE_NAME,
+        format=C.LOGGER_FORMAT,
+    )
