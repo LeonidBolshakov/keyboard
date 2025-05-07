@@ -27,11 +27,8 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время после нажатия клавиши
     :return: None
     """
-    signals.debug = True
-
     press_key(s)
     sleep(time_delay)
-    signals.debug = False
 
 
 def press_key(s: str):
@@ -40,13 +37,13 @@ def press_key(s: str):
     logger.info(f"   ->{symbol}")
 
 
-def get_current_layout():
+def get_current_layout_id():
     """Получаем текущий layout_id"""
     hkl = ctypes.windll.user32.GetKeyboardLayout(0)
     return hkl & 0xFFFF
 
 
-def set_layout(layout_id: int):
+def set_layout_id(layout_id: int):
     """Устанавливаем раскладку по layout_id"""
     ctypes.windll.user32.PostMessageW(
         C.PM_HWND_BROADCAST,
@@ -56,7 +53,7 @@ def set_layout(layout_id: int):
     )
 
 
-def put_clipboard(text: str) -> None:
+def put_to_clipboard(text: str) -> None:
     """Записываем текст в буфер обмена"""
     pyperclip.copy(text)
 
@@ -79,7 +76,7 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
 
 def show_message(
-        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.
@@ -89,13 +86,10 @@ def show_message(
     :param color: (QColor). Цвет сообщения
     :return: None
     """
-    print(1)
     msg_box = QMessageBox()
-    print(2)
 
     # Настраиваем окно сообщения
     msg_box.setText(message)
-    print(3)
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.setStyleSheet(f"color: {color.name()};")
     # Находим кнопку OK и кликаем её с задержкой
@@ -124,7 +118,7 @@ def get_replacement_variant(text: str) -> str:
     :param text: (str). Исходный текст
     :return: (str). Вариант замены
     """
-    return ReplaceText().swap_keyboard_layout(text)
+    return ReplaceText().swap_keyboard_register(text)
 
 
 def get_selection() -> str:

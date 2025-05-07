@@ -57,6 +57,7 @@ class Dialogue(QMainWindow):
             C.COLOR_MESSAGE_START_PROGRAM,
         )
 
+        # Объявление имён
         self.old_clipboard_text = ""
         self.clipboard_text = ""
         self.is_restore_clipboard = True
@@ -65,6 +66,7 @@ class Dialogue(QMainWindow):
         self.init_var()  # Инициализируем переменные
         self.set_connect()  # Назначаем обработчики событий
         self.custom_UI()  # Делаем пользовательские настройки интерфейса
+        self.set_keyboard_layout()  # Устанавливаем раскладку клавиатуры,заданную параметром
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         """
@@ -137,12 +139,12 @@ class Dialogue(QMainWindow):
     def show_replacements_text(self, replacement_option_text: str) -> None:
         """Отображаем вариант замены текста."""
         self.txtEditReplace.setText(
-            f.ReplaceText().swap_keyboard_layout(replacement_option_text)
+            f.ReplaceText().swap_keyboard_register(replacement_option_text)
         )
 
     def on_Yes(self):
         """Заменяем выделенный текст предложенным вариантом замены"""
-        f.put_clipboard(self.txtEditReplace.toPlainText())
+        f.put_to_clipboard(self.txtEditReplace.toPlainText())
         self.hide()  # Освобождаем фокус для окна с выделенным текстом
         self.stop_dialogue(1)
 
@@ -156,7 +158,7 @@ class Dialogue(QMainWindow):
         """Отказ от замены текста"""
         self.stop_dialogue(2)
 
-    def fill_clipboard(self):
+    def processing_clipboard(self):
         clipboard_text = f.get_selection()
 
         # Если текст не выделен. Оставляем возможность вручную вставить его с помощью Ctrl_V
@@ -189,7 +191,7 @@ class Dialogue(QMainWindow):
             f.get_clipboard()
         )  # запоминаем буфер обмена для возможного дальнейшего восстановления
         self.is_restore_clipboard = True
-        self.fill_clipboard()  # Обрабатываем буфер обмена
+        self.processing_clipboard()  # Обрабатываем буфер обмена
         self.setWindowFlag(
             Qt.WindowType.WindowStaysOnTopHint, True
         )  # Поднимаем окно диалога над всеми окнами
@@ -214,9 +216,15 @@ class Dialogue(QMainWindow):
         # Если буфер обмена не требуется для завершения действий Пользователя,
         # то восстанавливаем первоначальный буфер обмена
         if self.is_restore_clipboard:
-            f.put_clipboard(self.old_clipboard_text)
+            f.put_to_clipboard(self.old_clipboard_text)
             logger.info(
                 f"{C.LOGGER_TEXT_RESTORED_CLIPBOARD} *'{self.old_clipboard_text}'*"
             )
         self.hide()  # Убираем окно с экрана
         logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE}")
+
+    @staticmethod
+    def set_keyboard_layout():
+        layout_id = f.get_keyboard_layout_from_param()
+        if layout_id:
+            f.set_layout_id(layout_id)

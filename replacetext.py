@@ -8,7 +8,7 @@ class ReplaceText:
         # Обратный словарь (русский -> английский)
         self.ru_to_en = {v: k for k, v in en_to_ru.items()}
 
-    def swap_keyboard_layout(self, text_input: str) -> str:
+    def swap_keyboard_register(self, text_input: str) -> str:
         """
         Обрабатывается каждый символ строки.
         Если символ на русском регистре клавиши, то заменяет его на символ английского регистра клавиши,

@@ -23,9 +23,6 @@ class Listen:
         :param event - событие
         :return: None
         """
-        if self.signals.debug:
-            logger.info(f"   <-- {event.scan_code}, {event.device}")
-
         if event.name == C.KEY_BEGIN_DIALOGUE:  # Клавиша вызова окна диалога
             # Генерация сигнала "Начало диалога"
             self.signals.start_dialogue.emit()

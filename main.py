@@ -43,6 +43,7 @@ def start_keyboard_listening() -> None:
     listener_thread = threading.Thread(target=listen.listen, daemon=True)
     listener_thread.start()
 
+
 def main():
     # Блокируем вывод сообщений о GPA
     os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
@@ -69,7 +70,7 @@ def main():
             None, C.TITLE_WARNING, C.TEXT_NO_ADMIN, QMessageBox.StandardButton.Ok
         )
     # Проверка английского регистра клавиатуры
-    if f.get_current_layout() != C.LAYOUT_EN_US:
+    if f.get_current_layout_id() != C.LAYOUT_EN_US:
         QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
 
     # Создаём главное окно диалога. Окно не высвечиваем.
