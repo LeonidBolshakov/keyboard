@@ -2,6 +2,7 @@
 
 from time import sleep
 import ctypes
+import sys
 import logging
 
 logger = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ def making_button_settings(button: QPushButton, text: str, qss: str = "") -> Non
 
 
 def show_message(
-    message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
+        message: str, show_seconds: int | float = 3, color: QColor = QColor("red")
 ) -> None:
     """
     Показать информационное сообщение.
@@ -88,10 +89,13 @@ def show_message(
     :param color: (QColor). Цвет сообщения
     :return: None
     """
+    print(1)
     msg_box = QMessageBox()
+    print(2)
 
     # Настраиваем окно сообщения
     msg_box.setText(message)
+    print(3)
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.setStyleSheet(f"color: {color.name()};")
     # Находим кнопку OK и кликаем её с задержкой
@@ -186,3 +190,20 @@ def init_logging():
         filename=C.LOGGER_FILE_NAME,
         format=C.LOGGER_FORMAT,
     )
+
+
+def parse_number(s: str) -> int | None:
+    s = s.strip().lower()
+    base = 16 if s.startswith("0x") else 10
+    try:
+        return int(s, base)
+    except ValueError:
+        logger.warning(f"{C.LOGGER_TEXT_ERROR_PARAM} - {s}")
+        return None
+
+
+def get_keyboard_layout_from_param() -> int | None:
+    if len(sys.argv) != 2:
+        logger.warning(f"{C.LOGGER_TEXT_ERROR_NUM_PARAM} {len(sys.argv) - 1}")
+        return None
+    return parse_number(sys.argv[1])

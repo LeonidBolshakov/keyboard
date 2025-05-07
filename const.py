@@ -14,6 +14,13 @@ class Const:
     LAYOUT_RU_RU = 0x419
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
+    LOGGER_TEXT_ERROR_NUM_PARAM = (
+        "У программы 1 параметр Код шаблона клавиатуры. Передано параметров."
+    )
+    LOGGER_TEXT_ERROR_PARAM = (
+        "Параметр программы десятичное или шестнадцатеричное число."
+        "Например 0x409. Передан параметр"
+    )
     LOGGER_TEXT_ERROR_READ = "Выделенный текст не удалось скопировать в буфер обмена"
     LOGGER_TEXT_LOAD_PROGRAM = "Программа загружена"
     LOGGER_TEXT_NO_READ = (
@@ -48,6 +55,7 @@ class Const:
     TEXT_CRITICAL_ERROR_1 = (
         "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
     )
+    TEXT_ERROR_PARAM = "Ошибка в параметрах программы. Смотрите LOG"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"
