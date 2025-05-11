@@ -14,6 +14,7 @@ from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton
 from const import Const as C
 import functions as f
 from customtextedit import CustomTextEdit
+import hotkeys
 
 
 # noinspection PyUnresolvedReferences
@@ -52,7 +53,7 @@ class Dialogue(QMainWindow):
         # Информирование о загрузке программы
         logging.info(C.LOGGER_TEXT_LOAD_PROGRAM)
         f.show_message(
-            f"{C.TEXT_MESSAGE_START_PROGRAM} {C.KEY_BEGIN_DIALOGUE}",
+            f"{C.TEXT_MESSAGE_START_PROGRAM} {hotkeys.KEY_BEGIN_DIALOGUE}",
             C.TIME_MESSAGE_START_PROGRAM,
             C.COLOR_MESSAGE_START_PROGRAM,
         )

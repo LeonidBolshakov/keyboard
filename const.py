@@ -9,7 +9,6 @@ class Const:
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"
     HASATTR_FROZEN = "frozen"
-    KEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна диалога
     LAYOUT_EN_US = 0x409
     LAYOUT_RU_RU = 0x419
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"

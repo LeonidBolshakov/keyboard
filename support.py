@@ -1,5 +1,4 @@
 import keyboard
-import sys
 
 
 # Для определения кода клавиши. Запустите программу и нажмите нужную клавишу - программа выведет код клавиши.
@@ -9,13 +8,13 @@ import sys
 
 
 def on_press(event: keyboard._keyboard_event.KeyboardEvent) -> None:
-    print(f"{event.name=} {event.scan_code=}")
-    if event.name == "Esc":
-        sys.exit()
+    print(f"{event.name=} {event.scan_code=} {event.event_type=} {event.modifiers=}")
 
 
-keyboard.on_press(on_press)
-keyboard.wait()
+keyboard.add_hotkey("ctrl+4", lambda: keyboard.write("Мы здесь"))
+
+keyboard.on_release(on_press)
+keyboard.wait("esc")
 
 # Уберите комментарии у следующих операторов.
 # Выполнив программу Вы получите словарь замены символов в формате json.

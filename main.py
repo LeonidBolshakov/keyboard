@@ -2,10 +2,10 @@
 
 from sys import exit
 import threading
-import logging
 import os
 
-from lsten import Listen
+import keyboard
+import hotkeys
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtCore import QSharedMemory
 
@@ -37,10 +37,15 @@ def setup_connections(_window: Dialogue) -> None:
     _signals.on_Cancel.connect(_window.on_Cancel)
 
 
+def listen():
+    """Прослушивание клавиатуры"""
+    hotkeys.set_hotkeys()  # Установка горячих клавиш
+    keyboard.wait()
+
+
 def start_keyboard_listening() -> None:
     """Запускаем прослушивание клавиатуры"""
-    listen = Listen()
-    listener_thread = threading.Thread(target=listen.listen, daemon=True)
+    listener_thread = threading.Thread(target=listen, daemon=True)
     listener_thread.start()
 
 
