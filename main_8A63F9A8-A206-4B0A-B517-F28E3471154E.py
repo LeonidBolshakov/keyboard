@@ -7,7 +7,6 @@ import os
 import keyboard
 import hotkeys
 from PyQt6.QtWidgets import QApplication, QMessageBox
-from PyQt6.QtCore import QSharedMemory
 
 from dialogue import Dialogue
 from const import Const as C
@@ -53,18 +52,8 @@ def main():
     # Блокируем вывод сообщений о GPA
     os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
 
-    # Проверка повторного запуска программы.
-    shared_memory = QSharedMemory(C.UUID_PROGRAM)
-    shared_memory.attach()
-    if shared_memory.data():
-        is_restart_program = True
-    else:
-        shared_memory.create(1)
-        f.init_logging()
-        is_restart_program = False
-
-        # Запускаем прослушивание клавиатуры
-        start_keyboard_listening()
+    # Запускаем прослушивание клавиатуры
+    start_keyboard_listening()
 
     # Создаем приложение.
     app = QApplication([])
@@ -79,7 +68,7 @@ def main():
         QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
 
     # Создаём главное окно диалога. Окно не высвечиваем.
-    window = Dialogue(is_restart_program)
+    window = Dialogue()
     setup_margins(window)  # Установка границ окна
     setup_connections(window)
 

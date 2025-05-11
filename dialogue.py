@@ -29,22 +29,9 @@ class Dialogue(QMainWindow):
     no_button: QPushButton
     cancel_button: QPushButton
 
-    def __init__(self, restart_program: bool) -> None:
-        """
-        Инициализация объекта класса
-        :param restart_program: (bool) - признак повторного запуска программы
-        """
+    def __init__(self) -> None:
+        """Инициализация объекта класса"""
         super().__init__()
-
-        # При повторном запуске программы повторный процесс прекращается.
-        if restart_program:
-            logging.warning(C.LOGGER_TEXT_RESTART_PROGRAM)
-            f.show_message(
-                C.TEXT_MESSAGE_RESTART_PROGRAM,
-                C.TIME_MESSAGE_RESTART_PROGRAM,
-                C.COLOR_MESSAGE_RESTART_PROGRAM,
-            )
-            sys.exit(1)
 
         # Если прежний диалог не закончен - новый не начинаем
         if not self.isHidden():
