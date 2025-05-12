@@ -37,7 +37,7 @@ def press_key(s: str):
     logger.info(f"   ->{symbol}")
 
 
-def get_current_layout_id():
+def get_current_layout_id() -> int:
     """Получаем текущий layout_id"""
     hkl = ctypes.windll.user32.GetKeyboardLayout(0)
     return hkl & 0xFFFF
@@ -92,7 +92,7 @@ def show_message(
     msg_box.setText(message)
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.setStyleSheet(f"color: {color.name()};")
-    # Находим кнопку OK и кликаем её с задержкой
+    # Находим9025138590 кнопку OK и кликаем её с задержкой
     ok_button = msg_box.button(QMessageBox.StandardButton.Ok)
     if ok_button:
         ok_button.clicked.connect(lambda: None)

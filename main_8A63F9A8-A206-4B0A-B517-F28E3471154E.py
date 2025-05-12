@@ -3,6 +3,7 @@
 from sys import exit
 import threading
 import os
+import logging
 
 import keyboard
 import hotkeys
@@ -54,6 +55,11 @@ def main():
 
     # Запускаем прослушивание клавиатуры
     start_keyboard_listening()
+
+    # Запускаем логирование
+    logging.basicConfig(
+        level=logging.INFO, filename=C.LOGGER_FILE_NAME, format=C.LOGGER_FORMAT
+    )
 
     # Создаем приложение.
     app = QApplication([])

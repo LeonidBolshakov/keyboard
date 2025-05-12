@@ -214,5 +214,6 @@ class Dialogue(QMainWindow):
     @staticmethod
     def set_keyboard_layout():
         layout_id = f.get_keyboard_layout_from_param()
+        print(layout_id)
         if layout_id:
             f.set_layout_id(layout_id)

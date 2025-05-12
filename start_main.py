@@ -20,8 +20,9 @@ def is_running(script_name="main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py"):
     return False
 
 
-def show_message():
-    app = QApplication(sys.argv)
+def show_message_restart():
+    # noinspection PyUnusedLocal
+    app = QApplication([])
 
     # Создаем и настраиваем MessageBox
     f.show_message(
@@ -32,12 +33,23 @@ def show_message():
 
 
 if __name__ == "__main__":
+    layout_current = f.get_current_layout_id()
+    f.set_layout_id(0x409)  # Установка раскладки UN-US
     if is_running():
-        show_message()
-        exit(1)
+        show_message_restart()
+        f.set_layout_id(layout_current)
     else:
         # Запускаем фоновый GUI-процесс
-        subprocess.Popen(
-            [sys.executable, "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py"]
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py",
+                str(layout_current),
+            ],
+            stdin=subprocess.DEVNULL,  # Отключаем stdin
+            stdout=subprocess.DEVNULL,  # Перенаправляем stdout в никуда
+            stderr=subprocess.DEVNULL,  # Перенаправляем stderr в никуда
+            close_fds=True,  # Закрываем все файловые дескрипторы
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+            # Позволяет дочернему процессу жить после завершения родителя
         )
-        exit(0)

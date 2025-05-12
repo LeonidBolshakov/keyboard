@@ -10,7 +10,6 @@ class Const:
     CTRL = "ctrl"
     HASATTR_FROZEN = "frozen"
     LAYOUT_EN_US = 0x409
-    LAYOUT_RU_RU = 0x419
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_NUM_PARAM = (
