@@ -7,8 +7,16 @@ from PyQt6.QtGui import QColor
 class Const:
     COLOR_MESSAGE_RESTART_PROGRAM = QColor("red")
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
-    CTRL = "ctrl"
+    CTRL = "ctrl"  # Ctrl+c, Ctrl+v
     HASATTR_FROZEN = "frozen"
+    HOTKEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна замены регистров
+    HOTKEY_CHANGE_REGISTER = "caps lock"
+    HOTKEY_MAIL = "3"
+    HOTKEY_MODIFIER = "ctrl+shift"  # Модификатор горячих цифровых клавиш
+    HOTKEY_MY_SIGNATURE = "9"
+    HOTKEY_TEL = "4"
+    KEY_CHANGE_REGISTER = "alt+right shift"
+    KEY_SIGN2 = "shift+enter"
     LAYOUT_EN_US = 0x409
     LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
@@ -54,6 +62,7 @@ class Const:
         "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
     )
     TEXT_ERROR_PARAM = "Ошибка в параметрах программы. Смотрите LOG"
+    TEXT_MAIL = "bolleoa@gmail.com"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"
@@ -65,6 +74,9 @@ class Const:
         "Раскладка клавиатуры НЕ английская\nПрограмма будет работать с ограничениями"
     )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
+    TEXT_TEL = "9025138590"
+    TEXT_SIGN1 = "С уважением,"
+    TEXT_SIGN3 = "Леонид Большаков"
     TEXT_WINDOW_NOT_FOUND = "-> Окно не найдено <-"
     TEXT_YES_BUTTON = "Заменить\nНажми 1"
     TIME_DELAY_CTRL_C = 0.1  # Задержка, в секундах, после нажатия Ctrl+c

@@ -40,7 +40,7 @@ class Dialogue(QMainWindow):
         # Информирование о загрузке программы
         logging.info(C.LOGGER_TEXT_LOAD_PROGRAM)
         f.show_message(
-            f"{C.TEXT_MESSAGE_START_PROGRAM} {hotkeys.KEY_BEGIN_DIALOGUE}",
+            f"{C.TEXT_MESSAGE_START_PROGRAM} {C.HOTKEY_BEGIN_DIALOGUE}",
             C.TIME_MESSAGE_START_PROGRAM,
             C.COLOR_MESSAGE_START_PROGRAM,
         )
@@ -214,6 +214,5 @@ class Dialogue(QMainWindow):
     @staticmethod
     def set_keyboard_layout():
         layout_id = f.get_keyboard_layout_from_param()
-        print(layout_id)
         if layout_id:
             f.set_layout_id(layout_id)

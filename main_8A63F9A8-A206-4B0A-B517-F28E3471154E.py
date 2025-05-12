@@ -44,7 +44,7 @@ def listen():
 
 
 def start_keyboard_listening() -> None:
-    """Запускаем прослушивание клавиатуры"""
+    """Запускаем прослушивание клавиатуры9"""
     listener_thread = threading.Thread(target=listen, daemon=True)
     listener_thread.start()
 

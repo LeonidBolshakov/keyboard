@@ -46,9 +46,6 @@ if __name__ == "__main__":
                 "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py",
                 str(layout_current),
             ],
-            stdin=subprocess.DEVNULL,  # Отключаем stdin
-            stdout=subprocess.DEVNULL,  # Перенаправляем stdout в никуда
-            stderr=subprocess.DEVNULL,  # Перенаправляем stderr в никуда
             close_fds=True,  # Закрываем все файловые дескрипторы
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
             # Позволяет дочернему процессу жить после завершения родителя

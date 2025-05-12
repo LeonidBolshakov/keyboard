@@ -4,9 +4,7 @@ from dataclasses import dataclass
 import keyboard
 
 from signals import signals
-
-HOTKEY_MODIFIER = "ctrl"  # Модификатор горячих цифровых клавиш
-KEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна замены регистров
+from const import Const as C
 
 
 @dataclass
@@ -18,22 +16,22 @@ class Hotkey:  # Описание горячей клавиши
 
 def my_signature():
     """Вывод личной подписи"""
-    keyboard.write("С уважением,")
-    keyboard.release(HOTKEY_MODIFIER)  # Гасим модификатор от нажатия горячей клавиши
-    keyboard.send("shift+enter")
-    keyboard.write("Леонид Большаков")
+    keyboard.write(C.TEXT_SIGN1)
+    keyboard.release(C.HOTKEY_MODIFIER)  # Гасим модификатор от нажатия горячей клавиши
+    keyboard.send(C.KEY_SIGN2)
+    keyboard.write(C.TEXT_SIGN3)
 
 
 hotkeys = (
-    Hotkey("3", lambda: keyboard.write("bolleoa@gmail.com"), modifier=True),
-    Hotkey("7", lambda: keyboard.write("9025138590"), modifier=True),
-    Hotkey("9", my_signature, modifier=True),
-    Hotkey("caps lock", lambda: keyboard.send("alt+right shift")),
-    Hotkey("scroll lock", lambda: signals.start_dialogue.emit()),
+    Hotkey(C.HOTKEY_MAIL, lambda: keyboard.write(C.TEXT_MAIL), modifier=True),
+    Hotkey(C.HOTKEY_TEL, lambda: keyboard.write(C.TEXT_TEL), modifier=True),
+    Hotkey(C.HOTKEY_MY_SIGNATURE, my_signature, modifier=True),
+    Hotkey(C.HOTKEY_CHANGE_REGISTER, lambda: keyboard.send(C.KEY_CHANGE_REGISTER)),
+    Hotkey(C.HOTKEY_BEGIN_DIALOGUE, lambda: signals.start_dialogue.emit()),
 )
 
 
 def set_hotkeys():
     for hotkey in hotkeys:
-        key = f"{HOTKEY_MODIFIER}+{hotkey.key}" if hotkey.modifier else hotkey.key
+        key = f"{C.HOTKEY_MODIFIER}+{hotkey.key}" if hotkey.modifier else hotkey.key
         keyboard.add_hotkey(key, hotkey.function, suppress=True)
