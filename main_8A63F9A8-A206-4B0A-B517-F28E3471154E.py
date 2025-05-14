@@ -58,7 +58,7 @@ def main():
 
     # Запускаем логирование
     logging.basicConfig(
-        level=logging.INFO, filename=C.LOGGER_FILE_NAME, format=C.LOGGER_FORMAT
+        level=logging.INFO, filename=C.LOGGER_FILE_PATH, format=C.LOGGER_FORMAT
     )
 
     # Создаем приложение.

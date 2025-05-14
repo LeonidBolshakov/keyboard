@@ -18,7 +18,7 @@ class Const:
     KEY_CHANGE_REGISTER = "alt+right shift"
     KEY_SIGN2 = "shift+enter"
     LAYOUT_EN_US = 0x409
-    LOGGER_FILE_NAME = r"c:\temp\keyboard.log"
+    LOGGER_FILE_PATH = r"c:\temp\keyboard.log"
     LOGGER_FORMAT = "%(asctime)s %(levelname)s %(message)s"
     LOGGER_TEXT_ERROR_NUM_PARAM = (
         "У программы 1 параметр Код шаблона клавиатуры. Передано параметров."
@@ -42,6 +42,7 @@ class Const:
     MARGIN_MAIN_WINDOW = (20, 20, 20, 20)
     MAX_CLIPBOARD_READS = 2  # максимально число считываний буфера обмена
     MIN_WIDTH_BUTTON = 170  # Минимальная ширина первых двух кнопок
+    MODUL_NAME = "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py"
     PATH_DIALOGUE_UI = (
         r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
     )
@@ -50,6 +51,8 @@ class Const:
         0x50  # Код сообщения. Запрос на смену раскладки клавиатуры
     )
     PM_FLAG_CHANGE = 0  # Запрос на изменение
+
+    PID_FILE_PATH = f"c:\\temp\\{MODUL_NAME}.txt"
 
     QSS_BUTTON = "font-weight: bold; font-size: 12pt; "
     QSS_NO = "color: darkblue;"
@@ -61,8 +64,7 @@ class Const:
     TEXT_CRITICAL_ERROR_1 = (
         "Ошибка в программе. Функция window_hide. Неизвестная команда от Dialogue -"
     )
-    TEXT_ERROR_PARAM = "Ошибка в параметрах программы. Смотрите LOG"
-    TEXT_MAIL = "bolleoa@gmail.com"
+    TEXT_WRITE_MAIL = "bolleoa@gmail.com"
     TEXT_MESSAGE_RESTART_PROGRAM = "Программа замены регистра текста уже запущена"
     TEXT_MESSAGE_START_PROGRAM = (
         "Запущена программа замены регистра выделенного текста. Горячая клавиша"
@@ -74,7 +76,7 @@ class Const:
         "Раскладка клавиатуры НЕ английская\nПрограмма будет работать с ограничениями"
     )
     TEXT_NO_BUTTON = "Не заменять\nНажми 2/Esc"
-    TEXT_TEL = "9025138590"
+    TEXT_WRITE_TEL = "9025138590"
     TEXT_SIGN1 = "С уважением,"
     TEXT_SIGN3 = "Леонид Большаков"
     TEXT_WINDOW_NOT_FOUND = "-> Окно не найдено <-"

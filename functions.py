@@ -181,7 +181,7 @@ def init_logging():
     """Стартуем систему логирования"""
     logging.basicConfig(
         level=logging.INFO,
-        filename=C.LOGGER_FILE_NAME,
+        filename=C.LOGGER_FILE_PATH,
         format=C.LOGGER_FORMAT,
     )
 
@@ -194,10 +194,3 @@ def parse_number(s: str) -> int | None:
     except ValueError:
         logger.warning(f"{C.LOGGER_TEXT_ERROR_PARAM} - {s}")
         return None
-
-
-def get_keyboard_layout_from_param() -> int | None:
-    if len(sys.argv) != 2:
-        logger.warning(f"{C.LOGGER_TEXT_ERROR_NUM_PARAM} {len(sys.argv) - 1}")
-        return None
-    return parse_number(sys.argv[1])

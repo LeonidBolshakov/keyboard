@@ -23,8 +23,8 @@ def my_signature():
 
 
 hotkeys = (
-    Hotkey(C.HOTKEY_MAIL, lambda: keyboard.write(C.TEXT_MAIL), modifier=True),
-    Hotkey(C.HOTKEY_TEL, lambda: keyboard.write(C.TEXT_TEL), modifier=True),
+    Hotkey(C.HOTKEY_MAIL, lambda: keyboard.write(C.TEXT_WRITE_MAIL), modifier=True),
+    Hotkey(C.HOTKEY_TEL, lambda: keyboard.write(C.TEXT_WRITE_TEL), modifier=True),
     Hotkey(C.HOTKEY_MY_SIGNATURE, my_signature, modifier=True),
     Hotkey(C.HOTKEY_CHANGE_REGISTER, lambda: keyboard.send(C.KEY_CHANGE_REGISTER)),
     Hotkey(C.HOTKEY_BEGIN_DIALOGUE, lambda: signals.start_dialogue.emit()),

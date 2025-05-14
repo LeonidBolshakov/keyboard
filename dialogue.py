@@ -54,7 +54,6 @@ class Dialogue(QMainWindow):
         self.init_var()  # Инициализируем переменные
         self.set_connect()  # Назначаем обработчики событий
         self.custom_UI()  # Делаем пользовательские настройки интерфейса
-        self.set_keyboard_layout()  # Устанавливаем раскладку клавиатуры,заданную параметром
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         """
@@ -210,9 +209,3 @@ class Dialogue(QMainWindow):
             )
         self.hide()  # Убираем окно с экрана
         logger.info(f"{C.LOGGER_TEXT_STOP_DIALOGUE}")
-
-    @staticmethod
-    def set_keyboard_layout():
-        layout_id = f.get_keyboard_layout_from_param()
-        if layout_id:
-            f.set_layout_id(layout_id)
