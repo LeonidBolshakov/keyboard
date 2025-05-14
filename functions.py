@@ -51,6 +51,7 @@ def set_layout_id(layout_id: int):
         C.PM_FLAG_CHANGE,
         layout_id,
     )
+    sleep(C.TIME_DELAY_SET_LAYOUT)
 
 
 def put_to_clipboard(text: str) -> None:
