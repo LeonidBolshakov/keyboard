@@ -2,7 +2,6 @@
 
 from time import sleep
 import ctypes
-import sys
 import logging
 
 logger = logging.getLogger(__name__)
@@ -27,24 +26,20 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     :param time_delay: (int | float). Время после нажатия клавиши
     :return: None
     """
-    press_key(s)
-    sleep(time_delay)
-
-
-def press_key(s: str):
     symbol = f"{C.CTRL}+{s}"
     keyboard.send(symbol)
+    sleep(time_delay)
     logger.info(f"   ->{symbol}")
 
 
 def get_current_layout_id() -> int:
-    """Получаем текущий layout_id"""
+    """Получаем текущий layout_id - ID раскладки клавиатуры"""
     hkl = ctypes.windll.user32.GetKeyboardLayout(0)
     return hkl & 0xFFFF
 
 
 def set_layout_id(layout_id: int):
-    """Устанавливаем раскладку по layout_id"""
+    """Устанавливаем раскладку клавиатуры по layout_id"""
     ctypes.windll.user32.PostMessageW(
         C.PM_HWND_BROADCAST,
         C.PM_WM_INPUTLANGCHANGEREQUEST,
@@ -109,7 +104,10 @@ def replace_selected_text():
 
 
 def get_clipboard() -> str:
-    """Возвращаем текст буфера обмена"""
+    """
+    Возвращаем текст буфера обмена
+    :return: (str).
+    """
     return pyperclip.paste()
 
 
@@ -188,6 +186,11 @@ def init_logging():
 
 
 def parse_number(s: str) -> int | None:
+    """
+    Преобразуем текст с числом в 10 или 16 системе счисления в число
+    :param s: (str) - Текст с числом
+    :return: (int | None) - число или None, если текст не число
+    """
     s = s.strip().lower()
     base = 16 if s.startswith("0x") else 10
     try:

@@ -1,4 +1,4 @@
-"""Классы сигналов и организации диалога с пользователем"""
+"""Класс организации диалога с пользователем"""
 
 import sys
 from pathlib import Path
@@ -14,7 +14,6 @@ from PyQt6.QtWidgets import QMainWindow, QDialogButtonBox, QPushButton
 from const import Const as C
 import functions as f
 from customtextedit import CustomTextEdit
-import hotkeys
 
 
 # noinspection PyUnresolvedReferences
@@ -37,7 +36,7 @@ class Dialogue(QMainWindow):
         if not self.isHidden():
             return
 
-        # Информирование о загрузке программы
+        # Информирование о первоначальной загрузке программы
         logging.info(C.LOGGER_TEXT_LOAD_PROGRAM)
         f.show_message(
             f"{C.TEXT_MESSAGE_START_PROGRAM} {C.HOTKEY_BEGIN_DIALOGUE}",
@@ -93,11 +92,14 @@ class Dialogue(QMainWindow):
         )
 
     def set_connect(self):
-        """Назначаем обработчики событий для клика кнопок"""
+        """Назначаем обработчики"""
+
+        # Обработчик событий для клика кнопок
         self.yes_button.clicked.connect(self.on_Yes)
         self.no_button.clicked.connect(self.on_No)
         self.cancel_button.clicked.connect(self.on_Cancel)
 
+        # Обработчик изменения копии оригинального текста
         self.txtEditSource.textChanged.connect(self.change_original_text)
 
     def custom_UI(self):
@@ -109,8 +111,8 @@ class Dialogue(QMainWindow):
         f.making_button_settings(self.cancel_button, C.TEXT_CANCEL_BUTTON)
 
         # Устанавливаем стили текстовых полей
-        self.txtEditReplace.setStyleSheet(C.QSS_TEXT)
         self.txtEditSource.setStyleSheet(C.QSS_TEXT)
+        self.txtEditReplace.setStyleSheet(C.QSS_TEXT)
 
         # Устанавливаем фокус на первую кнопку
         self.yes_button.setFocus()
@@ -141,11 +143,12 @@ class Dialogue(QMainWindow):
         logger.info(C.LOGGER_TEXT_UNLOAD_PROGRAM)
         QTimer.singleShot(0, QCoreApplication.exit)
 
-    def on_No(self):
+    def on_No(self) -> None:
         """Отказ от замены текста"""
         self.stop_dialogue(2)
 
-    def processing_clipboard(self):
+    def processing_clipboard(self) -> None:
+        """Обрабатываем буфер обмена"""
         clipboard_text = f.get_selection()
 
         # Если текст не выделен. Оставляем возможность вручную вставить его с помощью Ctrl_V
@@ -154,7 +157,8 @@ class Dialogue(QMainWindow):
 
         self.show_original_text(clipboard_text)  # Отображаем обрабатываемый текст
 
-    def change_original_text(self):
+    def change_original_text(self) -> None:
+        """Отображаем преобразованный исходный текст"""
         logger.info(f"{C.LOGGER_TEXT_CHANGE} *'{self.txtEditSource.toPlainText()}'*")
         self.show_replacements_text(self.txtEditSource.toPlainText())
 
@@ -166,7 +170,7 @@ class Dialogue(QMainWindow):
         if not self.isHidden():  # Если диалог не закончен - новый не начинаем
             return
 
-        window = f.get_window()  # Получаем окно операционной системы
+        window = f.get_window()  # Получаем активное окно операционной системы
         if window:
             window.activate()  # Активируем окно
             title = window.title
@@ -182,14 +186,17 @@ class Dialogue(QMainWindow):
         self.setWindowFlag(
             Qt.WindowType.WindowStaysOnTopHint, True
         )  # Поднимаем окно диалога над всеми окнами
-        self.show()  # Выводим окно на экран
+        self.show()  # Показываем окно
         # Делаем окно доступным для ввода с клавиатуры
         self.activateWindow()
 
     def stop_dialogue(self, command: int) -> None:
-        """Выполняем команду, заданную в параметре"""
+        """
+        Выполняем команду, заданную в параметре.
+        : command: (int) - Код команды закрытия диалога
+        """
 
-        # Обрабатываем параметр сигнала
+        # Обрабатываем команду
         match command:
             case 0:  # Выгрузка программы
                 pass
