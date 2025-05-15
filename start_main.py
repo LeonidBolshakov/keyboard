@@ -1,6 +1,7 @@
 import subprocess
 import sys
 from pathlib import Path
+from time import sleep
 
 import psutil
 from PyQt6.QtWidgets import QApplication
@@ -44,10 +45,15 @@ if __name__ == "__main__":
             [
                 sys.executable,
                 "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py",
+                str(original_layout_id),
             ],
             close_fds=True,  # Закрываем все файловые дескрипторы
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP,
+            creationflags=subprocess.CREATE_NO_WINDOW
+            | subprocess.CREATE_NEW_PROCESS_GROUP,
             # Позволяет дочернему процессу жить после завершения родителя
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
-        f.set_layout_id(original_layout_id)  # Возвращаем первоначальную раскладку
         Path(C.PID_FILE_PATH).write_text(f"{process.pid}:{process.args[1]}")
+        sleep(C.TIME_DELAY_SET_LAYOUT)
+        f.set_layout_id(original_layout_id)  # Возвращаем первоначальную раскладку

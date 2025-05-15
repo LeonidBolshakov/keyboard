@@ -32,7 +32,7 @@ class Const:
     LOGGER_TEXT_NO_READ = (
         "Неудачная попытка чтения выделенного текста. Время задержки ="
     )
-    LOGGER_TEXT_CHANGE = "Заменяющий текст -  "
+    LOGGER_TEXT_CHANGE = "Исходный текст -  "
     LOGGER_TEXT_RESTART_PROGRAM = "Повторный вызов программы"
     LOGGER_TEXT_RESTORED_CLIPBOARD = "Восстановили буфер обмена"
     LOGGER_TEXT_START_DIALOGUE = "Старт диалога. Заголовок окна"
@@ -84,7 +84,7 @@ class Const:
     TIME_DELAY_CTRL_C = 0.1  # Задержка, в секундах, после нажатия Ctrl+c
     TIME_DELAY_CTRL_V = 0.1  # Задержка, в секундах, после нажатия Ctrl+v
     TIME_DELAY_SET_LAYOUT = (
-        0.05  # Задержка, в секундах, после установки раскладки клавиатуры
+        1.5  # Задержка, в секундах, перед установкой раскладки клавиатуры
     )
     TIME_MESSAGE_RESTART_PROGRAM = (
         2  # Время, в секундах, высвечивания сообщения о повторном запуске программы
