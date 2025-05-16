@@ -18,7 +18,7 @@ def is_running():
     try:
         p = psutil.Process(int(pid))
         return True if p.is_running() and p.cmdline()[1] == name else False
-    except (psutil.NoSuchProcess, ValueError):
+    except (psutil.NoSuchProcess, ValueError, PermissionError):
         return False
 
 
