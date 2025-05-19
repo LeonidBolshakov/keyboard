@@ -30,7 +30,7 @@ HOTKEYS = (
         modifier=True,
     ),
     Hotkey(
-        C.HOTKEY_TEL, lambda: write_key(C.HOTKEY_TEL, C.TEXT_WRITE_MAIL), modifier=True
+        C.HOTKEY_TEL, lambda: write_key(C.HOTKEY_TEL, C.TEXT_WRITE_TEL), modifier=True
     ),
     Hotkey(C.HOTKEY_MY_SIGNATURE, my_signature, modifier=True),
     Hotkey(

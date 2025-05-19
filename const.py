@@ -12,7 +12,7 @@ class Const:
     HOTKEY_BEGIN_DIALOGUE = "scroll lock"  # Клавиша вызова окна замены регистров
     HOTKEY_CHANGE_REGISTER = "caps lock"
     HOTKEY_MAIL = "3"
-    HOTKEY_MODIFIER = "ctrl+shift"  # Модификатор горячих цифровых клавиш
+    HOTKEY_MODIFIER = "ctrl"  # Модификатор горячих цифровых клавиш
     HOTKEY_MY_SIGNATURE = "9"
     HOTKEY_TEL = "4"
     KEY_CHANGE_REGISTER = "alt+right shift"
