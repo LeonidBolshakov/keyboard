@@ -73,6 +73,9 @@ def main():
     if f.get_current_layout_id() != C.LAYOUT_EN_US:
         QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
 
+    # Сообщаем головной программе, что можно изменять регистр клавиатуры
+    print(f"{C.CHECK_COMPLETED}")
+
     # Создаём главное окно диалога. Окно не высвечиваем.
     window = Dialogue()
     setup_margins(window)  # Установка границ окна

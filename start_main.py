@@ -39,12 +39,12 @@ if __name__ == "__main__":
         show_message_restart()
     else:
         original_layout_id = f.get_current_layout_id()
-        f.set_layout_id(0x409)  # Установка раскладки UN-US
+        f.set_layout_id(C.LAYOUT_EN_US)  # Установка раскладки UN-US
         # Запускаем фоновый GUI-процесс
         process = subprocess.Popen(
             [
                 sys.executable,
-                "main_8A63F9A8-A206-4B0A-B517-F28E3471154E.py",
+                f"{C.MODUL_NAME}",
                 str(original_layout_id),
             ],
             close_fds=True,  # Закрываем все файловые дескрипторы
@@ -53,7 +53,12 @@ if __name__ == "__main__":
             # Позволяет дочернему процессу жить после завершения родителя
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            text=True,
         )
         Path(C.PID_FILE_PATH).write_text(f"{process.pid}:{process.args[1]}")
-        sleep(C.TIME_DELAY_SET_LAYOUT)
+
+        while True:
+            line = process.stdout.readline().strip()
+            if line == C.CHECK_COMPLETED:
+                break
         f.set_layout_id(original_layout_id)  # Возвращаем первоначальную раскладку

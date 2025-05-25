@@ -5,6 +5,7 @@ from PyQt6.QtGui import QColor
 
 @dataclass(frozen=True, slots=False)
 class Const:
+    CHECK_COMPLETED = "Проверки завершены."
     COLOR_MESSAGE_RESTART_PROGRAM = QColor("red")
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"  # Ctrl+c, Ctrl+v
@@ -83,9 +84,6 @@ class Const:
     TEXT_YES_BUTTON = "Заменить\nНажми 1"
     TIME_DELAY_CTRL_C = 0.1  # Задержка, в секундах, после нажатия Ctrl+c
     TIME_DELAY_CTRL_V = 0.1  # Задержка, в секундах, после нажатия Ctrl+v
-    TIME_DELAY_SET_LAYOUT = (
-        1.5  # Задержка, в секундах, перед установкой раскладки клавиатуры
-    )
     TIME_MESSAGE_RESTART_PROGRAM = (
         2  # Время, в секундах, высвечивания сообщения о повторном запуске программы
     )
