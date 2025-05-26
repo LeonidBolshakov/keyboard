@@ -54,6 +54,7 @@ if __name__ == "__main__":
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            bufsize=1,
         )
         Path(C.PID_FILE_PATH).write_text(f"{process.pid}:{process.args[1]}")
 
