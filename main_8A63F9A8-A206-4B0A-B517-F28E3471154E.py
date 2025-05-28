@@ -74,7 +74,7 @@ def main():
         QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
 
     # Сообщаем головной программе, что можно изменять регистр клавиатуры
-    print(f"{C.CHECK_COMPLETED}")
+    print(f"{C.CHECK_COMPLETED}", flush=True)
 
     # Создаём главное окно диалога. Окно не высвечиваем.
     window = Dialogue()

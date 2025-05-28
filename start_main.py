@@ -1,7 +1,6 @@
 import subprocess
 import sys
 from pathlib import Path
-from time import sleep
 
 import psutil
 from PyQt6.QtWidgets import QApplication
@@ -14,8 +13,8 @@ def is_running():
     if not Path(C.PID_FILE_PATH).exists():
         return False
 
-    pid, name = Path(C.PID_FILE_PATH).read_text().split(":", 1)
     try:
+        pid, name = Path(C.PID_FILE_PATH).read_text().split(":", 1)
         p = psutil.Process(int(pid))
         return True if p.is_running() and p.cmdline()[1] == name else False
     except (psutil.NoSuchProcess, ValueError, PermissionError):
@@ -57,7 +56,6 @@ if __name__ == "__main__":
             bufsize=1,
         )
         Path(C.PID_FILE_PATH).write_text(f"{process.pid}:{process.args[1]}")
-
         while True:
             line = process.stdout.readline().strip()
             if line == C.CHECK_COMPLETED:
