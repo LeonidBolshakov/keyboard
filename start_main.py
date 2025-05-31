@@ -22,7 +22,6 @@ def is_running():
 
 
 def show_message_restart():
-    # noinspection PyUnusedLocal
     app = QApplication([])
 
     # Создаем и настраиваем MessageBox
@@ -31,6 +30,7 @@ def show_message_restart():
         C.TIME_MESSAGE_RESTART_PROGRAM,
         C.COLOR_MESSAGE_RESTART_PROGRAM,
     )
+    app.quit()
 
 
 if __name__ == "__main__":
@@ -38,13 +38,11 @@ if __name__ == "__main__":
         show_message_restart()
     else:
         original_layout_id = f.get_current_layout_id()
-        f.set_layout_id(C.LAYOUT_EN_US)  # Установка раскладки UN-US
-        # Запускаем фоновый GUI-процесс
+
         process = subprocess.Popen(
             [
                 sys.executable,
                 f"{C.MODUL_NAME}",
-                str(original_layout_id),
             ],
             close_fds=True,  # Закрываем все файловые дескрипторы
             creationflags=subprocess.CREATE_NO_WINDOW
@@ -55,8 +53,12 @@ if __name__ == "__main__":
             text=True,
             bufsize=1,
         )
-        Path(C.PID_FILE_PATH).write_text(f"{process.pid}:{process.args[1]}")
-        while True:
+
+        Path(C.PID_FILE_PATH).write_text(
+            f"{process.pid}:{process.args[1]}"
+        )  # Записываем информацию о процессе
+
+        while True:  # Дожидаемся сигнала от головного процесса
             line = process.stdout.readline().strip()
             if line == C.CHECK_COMPLETED:
                 break

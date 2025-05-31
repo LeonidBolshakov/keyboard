@@ -50,8 +50,10 @@ def start_keyboard_listening() -> None:
 
 
 def main():
-    # Блокируем вывод сообщений о GPA
-    os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE
+    f.set_layout_id(
+        C.LAYOUT_EN_US
+    )  # Устанавливаем английскую раскладку клавиатуры. Это необходимо для правильной работы Ctrl+C -> Ctrl+V
+    os.environ[C.QT_ENVIRON_KEY] = C.QT_ENVIRON_VALUE  # Блокируем вывод сообщений о GPA
 
     # Запускаем прослушивание клавиатуры
     start_keyboard_listening()

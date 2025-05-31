@@ -5,7 +5,7 @@ from PyQt6.QtGui import QColor
 
 @dataclass(frozen=True, slots=False)
 class Const:
-    CHECK_COMPLETED = "Next"
+    CHECK_COMPLETED = "Next" # Текст обмена между процессами - можно возвращать регистр клавиатуры
     COLOR_MESSAGE_RESTART_PROGRAM = QColor("red")
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"  # Ctrl+c, Ctrl+v

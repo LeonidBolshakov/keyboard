@@ -1,8 +1,9 @@
 """Функции, не привязанные к классам"""
 
-from time import sleep
+import time
 import ctypes
 import logging
+from time import sleep
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +11,7 @@ import pygetwindow as gw
 import pyperclip
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import QColor, QKeyEvent
-from PyQt6.QtWidgets import QMessageBox, QPushButton
+from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
 from PyQt6.QtCore import Qt
 import keyboard
 
@@ -28,7 +29,7 @@ def press_ctrl(s: str, time_delay: int | float) -> None:
     """
     symbol = f"{C.CTRL}+{s}"
     keyboard.send(symbol)
-    sleep(time_delay)
+    time.sleep(time_delay)
     logger.info(f"   ->{symbol}")
 
 
@@ -40,7 +41,7 @@ def get_current_layout_id() -> int:
 
 def set_layout_id(layout_id: int):
     """Устанавливаем раскладку клавиатуры по layout_id"""
-    ctypes.windll.user32.PostMessageW(
+    ctypes.windll.user32.SendMessageW(
         C.PM_HWND_BROADCAST,
         C.PM_WM_INPUTLANGCHANGEREQUEST,
         C.PM_FLAG_CHANGE,
@@ -87,7 +88,7 @@ def show_message(
     msg_box.setText(message)
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.setStyleSheet(f"color: {color.name()};")
-    # Находим9025138590 кнопку OK и кликаем её с задержкой
+    # Находим кнопку OK и кликаем её с задержкой
     ok_button = msg_box.button(QMessageBox.StandardButton.Ok)
     if ok_button:
         ok_button.clicked.connect(lambda: None)
