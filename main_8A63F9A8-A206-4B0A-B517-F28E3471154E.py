@@ -50,6 +50,11 @@ def start_keyboard_listening() -> None:
 
 
 def main():
+    # Запускаем логирование
+    logging.basicConfig(
+        level=logging.INFO, filename=C.LOGGER_FILE_PATH, format=C.LOGGER_FORMAT
+    )
+
     f.set_layout_id(
         C.LAYOUT_EN_US
     )  # Устанавливаем английскую раскладку клавиатуры. Это необходимо для правильной работы Ctrl+C -> Ctrl+V
@@ -57,12 +62,6 @@ def main():
 
     # Запускаем прослушивание клавиатуры
     start_keyboard_listening()
-
-    # Запускаем логирование
-    logging.basicConfig(
-        level=logging.INFO, filename=C.LOGGER_FILE_PATH, format=C.LOGGER_FORMAT
-    )
-
     # Создаем приложение.
     app = QApplication([])
 
@@ -71,9 +70,6 @@ def main():
         QMessageBox.warning(
             None, C.TITLE_WARNING, C.TEXT_NO_ADMIN, QMessageBox.StandardButton.Ok
         )
-    # Проверка английского регистра клавиатуры
-    if f.get_current_layout_id() != C.LAYOUT_EN_US:
-        QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
 
     # Сообщаем головной программе, что можно изменять регистр клавиатуры
     print(f"{C.CHECK_COMPLETED}", flush=True)

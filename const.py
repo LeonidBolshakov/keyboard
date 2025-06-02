@@ -5,7 +5,9 @@ from PyQt6.QtGui import QColor
 
 @dataclass(frozen=True, slots=False)
 class Const:
-    CHECK_COMPLETED = "Next" # Текст обмена между процессами - можно возвращать регистр клавиатуры
+    CHECK_COMPLETED = (
+        "Next"  # Текст обмена между процессами - можно возвращать регистр клавиатуры
+    )
     COLOR_MESSAGE_RESTART_PROGRAM = QColor("red")
     COLOR_MESSAGE_START_PROGRAM = QColor("green")
     CTRL = "ctrl"  # Ctrl+c, Ctrl+v
@@ -47,11 +49,6 @@ class Const:
     PATH_DIALOGUE_UI = (
         r"_internal\dialogue.ui"  # Путь к файлу, сформированному Qt Designer
     )
-    PM_HWND_BROADCAST = 0xFFFF  # дескриптор окна (0xFFFF для отправки всем окнам)
-    PM_WM_INPUTLANGCHANGEREQUEST = (
-        0x50  # Код сообщения. Запрос на смену раскладки клавиатуры
-    )
-    PM_FLAG_CHANGE = 0  # Запрос на изменение
 
     PID_FILE_PATH = f"c:\\temp\\{MODUL_NAME}.txt"
 

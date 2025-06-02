@@ -41,12 +41,23 @@ def get_current_layout_id() -> int:
 
 def set_layout_id(layout_id: int):
     """Устанавливаем раскладку клавиатуры по layout_id"""
-    ctypes.windll.user32.SendMessageW(
-        C.PM_HWND_BROADCAST,
-        C.PM_WM_INPUTLANGCHANGEREQUEST,
-        C.PM_FLAG_CHANGE,
-        layout_id,
-    )
+
+    # 1. Получаем активное окно
+    hwnd = ctypes.windll.user32.GetForegroundWindow()
+
+    # 2. Отправляем запрос на смену раскладки
+    ctypes.windll.user32.SendMessageW(hwnd, 0x0050, 0x1, layout_id)
+
+    # 3. Проверяем результат
+    thread_id = ctypes.windll.user32.GetWindowThreadProcessId(hwnd, None)
+    new_layout = ctypes.windll.user32.GetKeyboardLayout(thread_id) & 0xFFFF
+    # Проверка английского регистра клавиатуры
+    if new_layout != layout_id:
+        logging.info(f"{new_layout=} {layout_id=}")
+        QMessageBox.warning(None, C.TITLE_WARNING, C.TEXT_NO_ENG_LAYOUT)
+
+
+# Пробуем переключиться на английскую (0x0409)
 
 
 def put_to_clipboard(text: str) -> None:
